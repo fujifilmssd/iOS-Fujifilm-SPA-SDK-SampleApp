@@ -1,0 +1,25 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "5296cceb-edcb-f044-950f-c064736107ee++829",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+    "5296cceb-edcb-f044-950f-c064736107ee++829" : {
+
+    }
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "5296cceb-edcb-f044-950f-c064736107ee++829" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "825DA9EE-B3C4-4CAE-8CD0-E6336C57783D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "5296cceb-edcb-f044-950f-c064736107ee++829" : "MobileDev\/SPA.MobileWeb\/tags\/3_22_2016\/iOSSDK\/Fujifilm_SPA_SDK_iOS_DemoApp\/Fujifilm_SPA_SDK_iOS_DemoApp\/PureLayout\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Fujifilm_SPA_SDK_iOS_DemoApp",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "SPA.MobileWeb\/tags\/3_22_2016\/iOSSDK\/Fujifilm_SPA_SDK_iOS_DemoApp\/Fujifilm_SPA_SDK_iOS_DemoApp.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "http:\/\/srcs01.fujiesystems.com\/SvnDomain\/Mobile",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Subversion",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "5296cceb-edcb-f044-950f-c064736107ee++829"
+    }
+  ]
+}
