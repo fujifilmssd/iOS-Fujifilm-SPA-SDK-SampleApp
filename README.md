@@ -1,4 +1,4 @@
-# Fujifilm SPA iOS SDK Tutorial
+# Fujifilm Smart Publishing API (SPA) iOS SDK Tutorial
 
 ## Introduction
 This document provides a tutorial to use the Fujifilm Smart Publishing API (SPA) iOS SDK library in your iOS application.
