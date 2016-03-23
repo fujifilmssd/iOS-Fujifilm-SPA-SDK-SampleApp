@@ -1,7 +1,7 @@
 # Fujifilm SPA iOS SDK Tutorial
 
 ## Introduction
-This document provides a tutorial to use the Fujifilm SPA iOS SDK library in your iOS application.
+This document provides a tutorial to use the Fujifilm Smart Publishing API (SPA) iOS SDK library in your iOS application.
 
 ### What is it?
 The Fujifilm Smart Publishing API SDK is a native library that you can include in your existing iOS application to enable photo product output through Fujifilm.  This provides you with a new revenue stream while providing a new valuable service to your application users.
@@ -27,7 +27,7 @@ To add Fujifilm SPA SDK to your Xcode project, you may add it manually, or you m
 
 ### Manual Installation
 1. Download files 
-⋅⋅* Download the SDK from TBD and Unzip the archive. You should have a folder with libFujifilm_SPA_SDK_iOS.a and Fujifilm.SPA.SDK.h, which are the SDK library and header file, respectively. 
+⋅⋅* Download the libFujifilm_SPA_SDK_iOS.a and Fujifilm.SPA.SDK.h, which are the located [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h) and [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a). 
 2. Add files to project
 ⋅⋅* Open your project in Xcode. Select File > Add Files To “MyApp” and select the folder you just unzipped. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
 3. Link with frameworks
@@ -152,7 +152,10 @@ It is up to the view controller to handle any/all of these cases in fujifilmSPAS
 
 @interface MyFujifilmSPASDKController : UIViewController <FujifilmSPASDKDelegate>{}
 
-Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:[test_or_live] images:[ARRAY_of_IMAGES] userID:[OPTIONAL_UserID];
+NSArray *myPublicURLAssets = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
+
+
+Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:[test_or_live] images:[ARRAY_of_LOCALIMAGES_or_PUBLICURLS] userID:[OPTIONAL_UserID];
 
 fujifilmOrderController.delegate = self;
 

@@ -1,7 +1,7 @@
 //
 //  Fujifilm.SPA.SDK.h
 //
-//  Created by Jonathan Nick on 9/7/12.
+//  Created by Jonathan Nick on 1/7/16.
 //  Copyright (c) 2016 FUJIFILM North America Corp. All rights reserved.
 //
 
