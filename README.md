@@ -27,11 +27,11 @@ To add Fujifilm SPA SDK to your Xcode project, you may add it manually, or you m
 
 ### Manual Installation
 1. Download files 
-    * Download the libFujifilm_SPA_SDK_iOS.a and Fujifilm.SPA.SDK.h, which are the located [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h) and [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a). 
+    * Download the [libFujifilm_SPA_SDK_iOS.a](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.a) and [Fujifilm.SPA.SDK.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.h), which are the located [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.a) and [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.h). 
 2. Add files to project
-    * Open your project in Xcode. Select File > Add Files To “MyApp” and select the folder you just unzipped. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
+    * Open your project in Xcode. Select File > Add Files To “MyApp” and select the files you just downloaded. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
 3. Link with frameworks
-    * Add the following frameworks to your project: AddressBook, AddressBookUI, UIKit, CoreGraphics, Photos, and Foundation. To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
+    * Add the following frameworks to your project: AddressBook, AddressBookUI, MobileCoreServices, SystemConfiguration, AssetsLibrary, ImageIO, and Photos. To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
 
 ## Using CocoaPods
 
@@ -81,21 +81,21 @@ To begin, create a view controller that will extend UIViewController. For exampl
 #import "Fujifilm.SPA.SDK.h"
 ```
 
-In the interface declaration, ensure MyFujifilmSPASDKController implements the FujifilmSPASDKDelegate protocol, like so:
+In your view controller header, ensure MyFujifilmSPASDKController implements the FujifilmSPASDKDelegate protocol, like so:
 ```objective-c
-@interface MyFujifilmSPASDKController : UIViewController <FujifilmSPASDKDelegate>{}```
+@interface MyFujifilmSPASDKController : UIViewController <FujifilmSPASDKDelegate>{}
 ```
 
 ### Fujifilm SPA SDK Usage
 In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method like so:
 ```objective-c
-Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:[‘test’_or_’live’] images:[ARRAY_of_IMAGES] userID:[OPTIONAL_UserID];```
+Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:["test"_or_"live"] images:[ARRAY_of_IMAGES] userID:@""];
 ```
 
 #### Parameters
 **apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com
 **environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
-**images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.
+**images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.
 **userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
 
 Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
@@ -111,7 +111,10 @@ The FujifilmSPASDKDelegate requires the view controller to implement the method 
 #### Finish Fujifilm SPA SDK
 
 When the Fujifilm SPA SDK is finished, it will return to the parent app, calling 
--(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message
+```objective-c
+-(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+}
+```
 The status code will be one of the following values:
 
 Fatal Error         = 0  
@@ -145,26 +148,6 @@ It is up to the view controller to handle any/all of these cases in fujifilmSPAS
     }
 }
 ```
-#### Sample Integration Code:
-
-```objective-c
-#import "Fujifilm.SPA.SDK.h"
-
-@interface MyFujifilmSPASDKController : UIViewController <FujifilmSPASDKDelegate>{}
-
-NSArray *myPublicURLAssets = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
-
-
-Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:[test_or_live] images:[ARRAY_of_LOCALIMAGES_or_PUBLICURLS] userID:[OPTIONAL_UserID];
-
-fujifilmOrderController.delegate = self;
-
-[self presentViewController:fujifilmOrderController animated:YES completion:nil];
-
--(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
-
-}
-```
 
 ## Additional notes and debugging help
 
@@ -172,14 +155,15 @@ The following are some notes to help with integrating with **Fujifilm SPA iOS SD
 
 ### Use Requirements:
 + The phone must have internet access to begin the SDK, and must retain access throughout the checkout process. If the connection is lost during the checkout process, an alert will be shown notifying the user that an internet connection is required
-+ A maximum of 50 images can be sent to the SDK in a given checkout process. If more than 50 images are sent, only the first 50 will be processed.
++ A maximum of 50 images can be sent to the SDK in a given checkout process. If more than 50 images are sent, only the first 50 will be processed
 + Only .jpg files are supported
 + The maximum size of a single file is 20MB
 
 ### Errors that prevent the SDK from Starting
 + 0 Images to be uploaded
 + No internet access
-+ Invalid APIKey. Ensure the APIKey you are using matches the environment string you are passing in (“test’, “live”).
++ Invalid APIKey. Ensure the APIKey you are using matches the environment string you are passing in (“test’, “live”)
++ Missing required frameworks: AddressBook, AddressBookUI, MobileCoreServices, SystemConfiguration, AssetsLibrary, ImageIO, and Photos
 
 ### Errors that will cancel the SDK
 + Loss of network or internet access before all images have finished uploading

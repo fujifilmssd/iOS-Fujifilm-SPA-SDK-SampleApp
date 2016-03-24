@@ -47,7 +47,7 @@
  - Go to http://www.fujifilmapi.com to register for an apiKey.
  - Ensure you have the right apiKey for the right environment.
  
- @param apiKey YFujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com.
+ @param apiKey The Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com.
  @param environment A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
  @param images An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB.
  @param userid Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters
