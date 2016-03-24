@@ -81,7 +81,7 @@ To begin, create a view controller that will extend UIViewController. For exampl
 #import "Fujifilm.SPA.SDK.h"
 ```
 
-In your view controller header, ensure MyFujifilmSPASDKController implements the FujifilmSPASDKDelegate protocol, like so:
+In your view controller header file, ensure it implements the FujifilmSPASDKDelegate protocol, like so:
 ```objective-c
 @interface MyFujifilmSPASDKController : UIViewController <FujifilmSPASDKDelegate>{}
 ```
@@ -93,10 +93,10 @@ Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] in
 ```
 
 #### Parameters
-**apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com
-**environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
-**images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.
-**userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
+**apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com  
+**environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.  
+**images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.  
+**userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.  
 
 Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
 ```objective-c
@@ -112,7 +112,20 @@ The FujifilmSPASDKDelegate requires the view controller to implement the method 
 
 When the Fujifilm SPA SDK is finished, it will return to the parent app, calling 
 ```objective-c
+#pragma mark -
+#pragma mark Fujifilm SPA SDK delegate
+
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+    switch (statusCode){
+        case 4:
+            // "User Cancelled";
+            break;
+        case 7:
+            // "Order Complete";
+            // orderId is stored in message
+        break;
+        //…
+    }
 }
 ```
 The status code will be one of the following values:
@@ -127,27 +140,7 @@ Time Out            = 6
 Order Complete      = 7  
 Upload Failed       = 8  
 
-It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen below. The status codes and messages are for internal use only, please do not present these to the user.
-
-#### Example
-
-```objective-c
-#pragma mark -
-#pragma mark Fujifilm SPA SDK delegate
-
--(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
-    switch (statusCode){
-        case 4:
-        // "User Cancelled";
-        break;
-    case 7:
-        // "Order Complete";
-        // orderId is stored in message
-        break;
-    //…
-    }
-}
-```
+It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
 
 ## Additional notes and debugging help
 
