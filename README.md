@@ -33,7 +33,15 @@ To add Fujifilm SPA SDK to your Xcode project, you may add it manually, or you m
 2. Add files to project
     * Open your project in Xcode. Select File > Add Files To “MyApp” and select the files you just downloaded. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
 3. Link with frameworks
-    * Add the following frameworks to your project: AddressBook, AddressBookUI, MobileCoreServices, SystemConfiguration, AssetsLibrary, ImageIO, and Photos. To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
+    * Add the following frameworks to your project:  
+        - AddressBook
+        - AddressBookUI
+        - MobileCoreServices
+        - SystemConfiguration
+        - AssetsLibrary
+        - ImageIO
+        - Photos
+    * To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
 
 ## Using CocoaPods
 
