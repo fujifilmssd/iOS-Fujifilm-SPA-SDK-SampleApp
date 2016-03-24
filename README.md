@@ -114,23 +114,15 @@ When the Fujifilm SPA SDK is finished, it will return to the parent app, calling
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message
 The status code will be one of the following values:
 
-Fatal Error         = 0
-
-No Images Uploaded  = 1
-
-No Internet         = 2
-
-Invalid API Key     = 3
-
-User Cancelled      = 4
-
-No Valid Images     = 5
-
-Time Out            = 6
-
-Order Complete      = 7
-
-Upload Failed       = 8	
+Fatal Error         = 0  
+No Images Uploaded  = 1  
+No Internet         = 2  
+Invalid API Key     = 3  
+User Cancelled      = 4  
+No Valid Images     = 5  
+Time Out            = 6  
+Order Complete      = 7  
+Upload Failed       = 8  
 
 It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen below. The status codes and messages are for internal use only, please do not present these to the user.
 
@@ -179,10 +171,10 @@ fujifilmOrderController.delegate = self;
 The following are some notes to help with integrating with **Fujifilm SPA iOS SDK**. 
 
 ### Use Requirements:
-+ The phone must have internet access to begin the SDK, and must retain access throughout the checkout process. If the connection is lost during the checkout process, an alert will be shown notifying the user that an internet connection is required.
++ The phone must have internet access to begin the SDK, and must retain access throughout the checkout process. If the connection is lost during the checkout process, an alert will be shown notifying the user that an internet connection is required
 + A maximum of 50 images can be sent to the SDK in a given checkout process. If more than 50 images are sent, only the first 50 will be processed.
-+ Only .jpg files are supported.
-+ The maximum size of a single file is 20MB.
++ Only .jpg files are supported
++ The maximum size of a single file is 20MB
 
 ### Errors that prevent the SDK from Starting
 + 0 Images to be uploaded
