@@ -1,7 +1,9 @@
 # Fujifilm SPA iOS SDK Tutorial
 
 ## Introduction
-This document provides a tutorial to use the Fujifilm Smart Publishing API (SPA) iOS SDK library in your iOS application.
+This project is a sample application to demonstrate how to integrate with the Fujifilm SPA iOS SDK.  
+
+This document provides a tutorial to use the Fujifilm SPA iOS SDK library in your iOS application.
 
 ### What is it?
 The Fujifilm Smart Publishing API SDK is a native library that you can include in your existing iOS application to enable photo product output through Fujifilm.  This provides you with a new revenue stream while providing a new valuable service to your application users.
