@@ -1,4 +1,4 @@
-# Fujifilm Smart Publishing API (SPA) iOS SDK Tutorial
+# Fujifilm SPA iOS SDK Tutorial
 
 ## Introduction
 This document provides a tutorial to use the Fujifilm Smart Publishing API (SPA) iOS SDK library in your iOS application.
@@ -27,11 +27,11 @@ To add Fujifilm SPA SDK to your Xcode project, you may add it manually, or you m
 
 ### Manual Installation
 1. Download files 
-⋅⋅* Download the libFujifilm_SPA_SDK_iOS.a and Fujifilm.SPA.SDK.h, which are the located [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h) and [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a). 
+    * Download the libFujifilm_SPA_SDK_iOS.a and Fujifilm.SPA.SDK.h, which are the located [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h) and [here](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a). 
 2. Add files to project
-⋅⋅* Open your project in Xcode. Select File > Add Files To “MyApp” and select the folder you just unzipped. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
+    * Open your project in Xcode. Select File > Add Files To “MyApp” and select the folder you just unzipped. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
 3. Link with frameworks
-⋅⋅* Add the following frameworks to your project: AddressBook, AddressBookUI, UIKit, CoreGraphics, Photos, and Foundation. To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
+    * Add the following frameworks to your project: AddressBook, AddressBookUI, UIKit, CoreGraphics, Photos, and Foundation. To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
 
 ## Using CocoaPods
 
@@ -92,7 +92,7 @@ In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it usi
 Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:[‘test’_or_’live’] images:[ARRAY_of_IMAGES] userID:[OPTIONAL_UserID];```
 ```
 
-#### Parameters:
+#### Parameters
 **apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com
 **environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
 **images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.
@@ -115,13 +115,21 @@ When the Fujifilm SPA SDK is finished, it will return to the parent app, calling
 The status code will be one of the following values:
 
 Fatal Error         = 0
+
 No Images Uploaded  = 1
+
 No Internet         = 2
+
 Invalid API Key     = 3
+
 User Cancelled      = 4
+
 No Valid Images     = 5
+
 Time Out            = 6
+
 Order Complete      = 7
+
 Upload Failed       = 8	
 
 It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen below. The status codes and messages are for internal use only, please do not present these to the user.
