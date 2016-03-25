@@ -103,10 +103,10 @@ Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] in
 ```
 
 #### Parameters
-**apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com  
-**environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.  
-**images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.  
-**userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.  
+*  **apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com  
+*  **environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.  
+*  **images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.  
+*  **userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.  
 
 Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
 ```objective-c
@@ -140,17 +140,50 @@ When the Fujifilm SPA SDK is finished, it will return to the parent app, calling
 ```
 The status code will be one of the following values:
 
-Fatal Error         = 0  
-No Images Uploaded  = 1  
-No Internet         = 2  
-Invalid API Key     = 3  
-User Cancelled      = 4  
-No Valid Images     = 5  
-Time Out            = 6  
-Order Complete      = 7  
-Upload Failed       = 8  
+*  Fatal Error         = 0  
+*  No Images Uploaded  = 1  
+*  No Internet         = 2  
+*  Invalid API Key     = 3  
+*  User Cancelled      = 4  
+*  No Valid Images     = 5  
+*  Time Out            = 6  
+*  Order Complete      = 7  
+*  Upload Failed       = 8  
 
 It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
+
+#### Example Code
+```objective-c
+- (IBAction)launchFujifilmSDK:(id)sender {
+      NSArray *images = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
+   
+      /*
+      ---------------------------------------------------------------------------------------
+      Creates a Fujifilm_SPA_SDK_iOS instance that handles all order checkout process.
+      ---------------------------------------------------------------------------------------
+      
+      - Go to http://www.fujifilmapi.com to register for an apiKey.
+      - Ensure you have the right apiKey for the right environment.
+      
+      @param apiKey: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com
+      @param environment: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
+      @param images: An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB.
+      @param userid: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters
+      @return Fujifilm_SPA_SDK_iOS object
+      *---------------------------------------------------------------------------------------
+      
+     */
+     
+     //MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
+      Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:@"YOUR_API_KEY" environment:@"test" images:images userID:@""];
+      
+      fujifilmOrderController.delegate = self;
+      
+      [self presentViewController:fujifilmOrderController animated:YES completion:nil];
+}
+-(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+}
+```
 
 ## Additional notes and debugging help
 
