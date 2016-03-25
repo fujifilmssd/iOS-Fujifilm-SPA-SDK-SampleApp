@@ -158,9 +158,9 @@ It is up to the view controller to handle any/all of these cases in fujifilmSPAS
       NSArray *images = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
    
       /*
-      ---------------------------------------------------------------------------------------
-      Creates a Fujifilm_SPA_SDK_iOS instance that handles all order checkout process.
-      ---------------------------------------------------------------------------------------
+      -------------------------------------------------------------------------------
+      Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.
+      -------------------------------------------------------------------------------
       
       - Go to http://www.fujifilmapi.com to register for an apiKey.
       - Ensure you have the right apiKey for the right environment.
@@ -169,9 +169,7 @@ It is up to the view controller to handle any/all of these cases in fujifilmSPAS
       @param environment: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
       @param images: An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB.
       @param userid: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters
-      @return Fujifilm_SPA_SDK_iOS object
       *---------------------------------------------------------------------------------------
-      
      */
      
      //MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
