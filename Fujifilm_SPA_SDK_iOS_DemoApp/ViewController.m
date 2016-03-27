@@ -281,6 +281,8 @@
             msg = @"Unknown Error";
     }
     
+    NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
+    
     if(statusCode != kFujifilmSDKStatusCodeFatal
        && statusCode!= kFujifilmSDKStatusCodeOrderComplete
        && statusCode != kFujifilmSDKStatusCodeUserCanceled
