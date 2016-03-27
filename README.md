@@ -125,16 +125,39 @@ When the Fujifilm SPA SDK is finished, it will return to the parent app, calling
 #pragma mark Fujifilm SPA SDK delegate
 
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+    NSString *msg;
     switch (statusCode){
+        case 0:
+            msg = @"Fatal Error";
+            break;
+        case 1:
+            msg = @"No Images Uploaded";
+            break;
+        case 2:
+            msg = @"No Internet";
+            break;
+        case 3:
+            msg = @"Invalid APIKey";
+            break;
         case 4:
-            // "User Cancelled";
+            msg = @"User Canceled";
+            break;
+        case 5:
+            msg = @"No Valid Images";
+            break;
+        case 6:
+            msg = @"Timeout Error";
             break;
         case 7:
-            // "Order Complete";
-            // orderId is stored in message
-        break;
-        //…
+            msg = @"Order Complete";
+            break;
+        case 8:
+            msg = @"Upload Failed";
+            break;
+        default:
+            msg = @"Unknown Error";
     }
+    NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
 }
 ```
 The status code will be one of the following values:
@@ -198,6 +221,39 @@ pod "Fujifilm-SPA-SDK"
       [self presentViewController:fujifilmOrderController animated:YES completion:nil];
 }
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+    NSString *msg;
+    switch (statusCode){
+        case 0:
+            msg = @"Fatal Error";
+            break;
+        case 1:
+            msg = @"No Images Uploaded";
+            break;
+        case 2:
+            msg = @"No Internet";
+            break;
+        case 3:
+            msg = @"Invalid APIKey";
+            break;
+        case 4:
+            msg = @"User Canceled";
+            break;
+        case 5:
+            msg = @"No Valid Images";
+            break;
+        case 6:
+            msg = @"Timeout Error";
+            break;
+        case 7:
+            msg = @"Order Complete";
+            break;
+        case 8:
+            msg = @"Upload Failed";
+            break;
+        default:
+            msg = @"Unknown Error";
+    }
+    NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
 }
 ```
 
