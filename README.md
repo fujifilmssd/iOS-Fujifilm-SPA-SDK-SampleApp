@@ -60,7 +60,7 @@ If it is not already added, make sure your Podfile contains the use_frameworks! 
         - Photos
     * To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
 
-### Step 4: Integrate with SDK
+### Step 3: Integrate with SDK
 
 In your view controller header file, import the SDK:
 ```objective-c
