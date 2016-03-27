@@ -153,6 +153,25 @@ The status code will be one of the following values:
 It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
 
 #### Example Code
+
+##### Podfile
+
+```ruby 
+platform :ios, '9.0'
+pod "Fujifilm-SPA-SDK"
+```
+
+##### ViewController.h
+
+```ruby 
+#import "Fujifilm.SPA.SDK.h"
+
+@interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
+
+@end
+```
+##### ViewController.m
+
 ```objective-c
 - (IBAction)launchFujifilmSDK:(id)sender {
       NSArray *images = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
