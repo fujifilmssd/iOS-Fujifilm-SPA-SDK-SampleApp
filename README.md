@@ -221,7 +221,7 @@ The following are some notes to help with integrating with **Fujifilm SPA iOS SD
 + Loss of network or internet access before all images have finished uploading
 + All images fail to upload / no remaining images to checkout with
 
-These errors will return control back to the parent app and call fujifilmSPASDKFinishedWithStatus  with status code and message corresponding to the cause of the error. In addition, depending on the nature of the error there may be a Log message in the iOS console with more information on the cause for the error.
+These errors will return control back to the parent app and call fujifilmSPASDKFinishedWithStatus  with status code and message corresponding to the cause of the error.
 
 ### Errors that will prevent a specific picture from uploading or being processed
 + An image is over 20MB
