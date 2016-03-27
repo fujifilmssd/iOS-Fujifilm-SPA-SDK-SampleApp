@@ -162,7 +162,7 @@ pod "Fujifilm-SPA-SDK"
 
 ##### ViewController.h
 
-```ruby 
+```objective-c
 #import "Fujifilm.SPA.SDK.h"
 
 @interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
