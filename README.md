@@ -86,18 +86,18 @@ You can enter this manually using the Xcode UI, or you can open the Info.plist f
     </dict>
 ```
 ### Creating the View Controller
-To begin, create a view controller that will extend UIViewController. For example, you may name your view controller MyFujifilmSPASDKController. In your view controller header (MyFujifilmSPASDKController.h) file, add the following line:
+To begin, create a view controller that will extend UIViewController. For example, you may name your view controller ViewController. In your view controller header file (ViewController.h), add the following line:
 ```objective-c
 #import "Fujifilm.SPA.SDK.h"
 ```
 
-In your view controller header file, ensure it implements the FujifilmSPASDKDelegate protocol, like so:
+In your view controller header file (ViewController.h), ensure it implements the FujifilmSPASDKDelegate protocol, like so:
 ```objective-c
-@interface MyFujifilmSPASDKController : UIViewController <FujifilmSPASDKDelegate>{}
+@interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
 ```
 
 ### Fujifilm SPA SDK Usage
-In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method like so:
+In your view controller (ViewController.m), create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method like so:
 ```objective-c
 Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:["test"_or_"live"] images:[ARRAY_of_IMAGES] userID:@""];
 ```
@@ -116,11 +116,10 @@ Finally, present the Fujifilm_SPA_SDK_iOS object:
 ```objective-c
 [self presentViewController:fujifilmOrderController animated:YES completion:nil];
 ```
-The FujifilmSPASDKDelegate requires the view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message. See **Finish Fujifilm SPA SDK** below for more information on what to put in this method.
+The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message. 
 
-#### Finish Fujifilm SPA SDK
+When the Fujifilm SPA SDK is finished, it will return to the parent app, calling fujifilmSPASDKFinishedWithStatus. You must implement like so:
 
-When the Fujifilm SPA SDK is finished, it will return to the parent app, calling 
 ```objective-c
 #pragma mark -
 #pragma mark Fujifilm SPA SDK delegate
@@ -150,9 +149,9 @@ The status code will be one of the following values:
 *  Order Complete      = 7  
 *  Upload Failed       = 8  
 
-It is up to the view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
+It is up to your view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
 
-#### Example Code
+#### Full Example Code
 
 ##### Podfile
 
