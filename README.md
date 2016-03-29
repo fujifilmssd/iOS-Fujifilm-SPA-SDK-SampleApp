@@ -62,92 +62,94 @@ If it is not already added, make sure your Podfile contains the use_frameworks! 
 
 ### Step 3: Integrate with SDK
 
-In your view controller header file, import the SDK:
-```objective-c
-#import "Fujifilm.SPA.SDK.h"
-```
+1. In your view controller header file, import the SDK:
+   ```objective-c
+   #import "Fujifilm.SPA.SDK.h"
+   ```
 
-In your view controller header file, ensure it implements the FujifilmSPASDKDelegate protocol:
-```objective-c
-@interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
-```
+2. In your view controller header file, ensure it implements the FujifilmSPASDKDelegate protocol:
+   ```objective-c
+   @interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
+   ```
 
-In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method:
-```objective-c
-Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:["test"_or_"live"] images:[ARRAY_of_IMAGES] userID:@""];
-```
+3. In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method:
+   ```objective-c
+   Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:["test"_or_"live"] images:[ARRAY_of_IMAGES] userID:@""];
+   ```
 
-#### initWithOptions Parameters
-*  **apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com  
-*  **environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.  
-*  **images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.  
-*  **userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.  
+   #### initWithOptions Parameters
+   *  **apiKey(NSString)**: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com  
+   *  **environment(NSString)**: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.  
+   *  **images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.  
+   *  **userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.  
 
-Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
-```objective-c
-fujifilmOrderController.delegate = self;
-```
-Finally, present the Fujifilm_SPA_SDK_iOS object:
-```objective-c
-[self presentViewController:fujifilmOrderController animated:YES completion:nil];
-```
-The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message. 
+4. Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
+   ```objective-c
+   fujifilmOrderController.delegate = self;
+   ```
+   
+5. Finally, present the Fujifilm_SPA_SDK_iOS object:
+   ```objective-c
+   [self presentViewController:fujifilmOrderController animated:YES completion:nil];
+   ```
+   
+6. The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message. 
 
-When the Fujifilm SPA SDK is finished, it will return to the parent app, calling fujifilmSPASDKFinishedWithStatus. You must implement like so:
+   When the Fujifilm SPA SDK is finished, it will return to the parent app, calling fujifilmSPASDKFinishedWithStatus. You must implement like so:
 
-```objective-c
-#pragma mark -
-#pragma mark Fujifilm SPA SDK delegate
-
--(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
-    NSString *msg;
-    switch (statusCode){
-        case 0:
-            msg = @"Fatal Error";
-            break;
-        case 1:
-            msg = @"No Images Uploaded";
-            break;
-        case 2:
-            msg = @"No Internet";
-            break;
-        case 3:
-            msg = @"Invalid APIKey";
-            break;
-        case 4:
-            msg = @"User Canceled";
-            break;
-        case 5:
-            msg = @"No Valid Images";
-            break;
-        case 6:
-            msg = @"Timeout Error";
-            break;
-        case 7:
-            msg = @"Order Complete";
-            break;
-        case 8:
-            msg = @"Upload Failed";
-            break;
-        default:
-            msg = @"Unknown Error";
-    }
-    NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
-}
-```
-The status code will be one of the following values:
-
-*  Fatal Error         = 0  
-*  No Images Uploaded  = 1  
-*  No Internet         = 2  
-*  Invalid API Key     = 3  
-*  User Cancelled      = 4  
-*  No Valid Images     = 5  
-*  Time Out            = 6  
-*  Order Complete      = 7  
-*  Upload Failed       = 8  
-
-It is up to your view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
+   ```objective-c
+   #pragma mark -
+   #pragma mark Fujifilm SPA SDK delegate
+   
+   -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+       NSString *msg;
+       switch (statusCode){
+           case 0:
+               msg = @"Fatal Error";
+               break;
+           case 1:
+               msg = @"No Images Uploaded";
+               break;
+           case 2:
+               msg = @"No Internet";
+               break;
+           case 3:
+               msg = @"Invalid APIKey";
+               break;
+           case 4:
+               msg = @"User Canceled";
+               break;
+           case 5:
+               msg = @"No Valid Images";
+               break;
+           case 6:
+               msg = @"Timeout Error";
+               break;
+           case 7:
+               msg = @"Order Complete";
+               break;
+           case 8:
+               msg = @"Upload Failed";
+               break;
+           default:
+               msg = @"Unknown Error";
+       }
+       NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
+   }
+   ```
+   The status code will be one of the following values:
+   
+   *  Fatal Error         = 0  
+   *  No Images Uploaded  = 1  
+   *  No Internet         = 2  
+   *  Invalid API Key     = 3  
+   *  User Cancelled      = 4  
+   *  No Valid Images     = 5  
+   *  Time Out            = 6  
+   *  Order Complete      = 7  
+   *  Upload Failed       = 8  
+   
+   It is up to your view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
 
 #### iOS 9+ Security - Updating info.plist
 Xcode 7 includes a new security feature called App Transport Security. In order to use the SDK you will need to add exceptions to your project's info plist file.
