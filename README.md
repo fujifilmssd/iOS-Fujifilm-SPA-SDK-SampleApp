@@ -72,7 +72,7 @@ If it is not already added, make sure your Podfile contains the use_frameworks! 
    @interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
    ```
 
-3. In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method:
+3. Create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithOptions method:
    ```objective-c
    Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:[YOUR_API_KEY] environment:["test"_or_"live"] images:[ARRAY_of_IMAGES] userID:@""];
    ```
@@ -83,17 +83,17 @@ If it is not already added, make sure your Podfile contains the use_frameworks! 
    *  **images(id)**: An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.  
    *  **userid(NSString)**: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.  
 
-4. Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
+4. Set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
    ```objective-c
    fujifilmOrderController.delegate = self;
    ```
    
-5. Finally, present the Fujifilm_SPA_SDK_iOS object:
+5. Present the Fujifilm_SPA_SDK_iOS object:
    ```objective-c
    [self presentViewController:fujifilmOrderController animated:YES completion:nil];
    ```
    
-6. The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message. 
+6. Implement the delegate. The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message. 
 
    When the Fujifilm SPA SDK is finished, it will return to the parent app, calling fujifilmSPASDKFinishedWithStatus. You must implement like so:
 
