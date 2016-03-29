@@ -6,7 +6,7 @@ Pod::Spec.new do |spec|
                             Enable photo product output through Fujifilm! Gives you access to over 50 popular photo gift products and allows you to control the availability and pricing of each product through our web portal. Please visit http://www.fujifilmapi.com to sign-up and obtain an API key, set product pricing, and configure your application.
                             DESC
   spec.homepage             = 'https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp'
-  spec.license              = { :type => 'Commercial', :file => 'LICENSE.md' }
+  spec.license              = { :type => 'MIT', :file => 'LICENSE.md' }
   spec.author               = {'Jonathan Nick' => 'jnick@fujifilm.com'}
   spec.source               = {:git => 'https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp.git', :tag => spec.version.to_s }
   spec.platform             = :ios, '7.0'
