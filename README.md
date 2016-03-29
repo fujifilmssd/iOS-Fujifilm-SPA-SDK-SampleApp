@@ -87,8 +87,7 @@ This section assumes you have CocoaPods installed on your system.
 4. Create an NSArray of PHAsset, ALAsset, or NSString (public image urls https://). The array can contain a combination of types.
    ```objective-c
    //An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). The array can contain combination of types. Images must be JPG format and smaller than 20MB. A maximum of 50 images can be sent in a given Checkout process. If more than 50 images are sent, only the first 50 will be processed.
-   
-    NSArray *fujifilmSPASDKImages = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
+   NSArray *fujifilmSPASDKImages = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
    ```
    
 5. Set an optional userId:
