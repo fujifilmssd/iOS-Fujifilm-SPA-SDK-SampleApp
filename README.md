@@ -175,35 +175,6 @@ This section assumes you have CocoaPods installed on your system.
    
    It is up to your view controller to handle any/all of these cases in fujifilmSPASDKFinishedWithStatus as seen above. The status codes and messages are for internal use only, please do not present these to the user.
 
-#### iOS 9+ Security - Updating info.plist
-Xcode 7 includes a new security feature called App Transport Security. In order to use the SDK you will need to add exceptions to your project's info plist file.
-
-You can enter this manually using the Xcode UI, or you can open the Info.plist file in a text editor and copy/paste the following in the inside the <plist> <dict> tag:
-```
-    <key>NSAppTransportSecurity</key>
-    <dict>
-        <key>NSAllowsArbitraryLoads</key>
-        <true/>
-        <key>NSExceptionDomains</key>
-        <dict>
-            <key>paypal.com</key>
-            <dict>
-                <key>NSExceptionRequiresForwardSecrecy</key>
-                <false/>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-            </dict>
-                <key>fujifilmesys.com</key>
-            <dict>
-                <key>NSExceptionRequiresForwardSecrecy</key>
-                <false/>
-                <key>NSIncludesSubdomains</key>
-                <true/>
-            </dict>
-        </dict>
-    </dict>
-```
-
 #### Full Example Code
 
 ##### Podfile
