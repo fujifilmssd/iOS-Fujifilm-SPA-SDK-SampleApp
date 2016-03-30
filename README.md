@@ -75,7 +75,7 @@ This section assumes you have CocoaPods installed on your system.
    @interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
    ```
    
-3. Set your Fujifilm SPA SDK static constants in your view controller class:
+3. In your view controller class, set your Fujifilm SPA SDK static constants:
    ```objective-c
    //Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com
    static NSString *const kFujifilmSPASDKAPIKey = @"5cb79d2191874aca879e2c9ed7d5747c";
