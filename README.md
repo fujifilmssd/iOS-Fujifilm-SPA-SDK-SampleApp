@@ -181,7 +181,7 @@ This section assumes you have CocoaPods installed on your system.
 
 ```ruby 
 platform :ios, '9.0'
-pod "Fujifilm-SPA-SDK"
+pod 'Fujifilm-SPA-SDK'
 ```
 
 ##### ViewController.h
