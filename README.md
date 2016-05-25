@@ -40,8 +40,10 @@ This section assumes you have CocoaPods installed on your system.
 
 1. In your Podfile, include the SPA SDK pod:
    ```ruby 
-   pod 'Fujifilm-SPA-SDK'
+   pod 'Fujifilm-SPA-SDK', '~> 1.0.4’
    ```
+   
+   CocoaPods 1.0 requires you to include the target in your pod file as shown above. If you are running less than 1.0 you do not have to specify the target. https://guides.cocoapods.org/using/the-podfile.html
    
    If you are creating a new Podfile, don't forget to include the platform and version your app supports (e.g. platform :ios, '9.0'). 
    
@@ -177,11 +179,15 @@ This section assumes you have CocoaPods installed on your system.
 
 #### Full Example Code
 
-##### Podfile
+##### Podfile (Cocoapods 1.0) 
+   
+   Don't forget to change the YOUR_PROJECT_TARGET string below to your target.
 
 ```ruby 
 platform :ios, '9.0'
-pod 'Fujifilm-SPA-SDK'
+target "YOUR_PROJECT_TARGET" do
+    pod 'Fujifilm-SPA-SDK', '~> 1.0.4’
+end
 ```
 
 ##### ViewController.h
@@ -284,6 +290,10 @@ These errors will return control back to the parent app and call fujifilmSPASDKF
 Image file is corrupt or is uploaded unsuccessfully, making it corrupt
 
 These Errors will not cancel the SDK, and as such, they will not directly return an error code to fujifilmSPASDKFinishedWithStatus. However, if enough images are removed such that 0 images are remaining then the SDK will be terminated.
+
+### Errors that will prevent the Pod from installing (The dependency `Fujifilm-SPA-SDK` is not used in any concrete target.)
++ CocoaPods 1.0 requires you to specify the target for each Pod. See example above.
++ https://guides.cocoapods.org/using/the-podfile.html
 
 ### Feedback
 We’re very interested in your feedback!  If you run into any trouble, have a suggestion, or want to let us know what worked well send us an email to contact@fujifilmapi.com or use the web form at https://www.fujifilmapi.com/contact-us. 
