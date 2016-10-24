@@ -260,8 +260,8 @@ pod 'Fujifilm-SPA-SDK', '~> 1.3'
 
 ```objective-c
 - (IBAction)launchFujifilmSDK:(id)sender {
-    NSArray *images = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
-    
+    NSArray *images = [[NSArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
+
     /*
      -------------------------------------------------------------------------------
      Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.

@@ -69,7 +69,8 @@
          *---------------------------------------------------------------------------------------
          
          Example using public urls
-         // self.imageAssets = [[NSMutableArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
+         self.imageAssets =  [[NSMutableArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
+         
          
          */
         LaunchPage page = kHome;
