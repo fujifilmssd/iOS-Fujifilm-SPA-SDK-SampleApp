@@ -304,6 +304,7 @@ pod "Fujifilm-SPA-SDK"
             break;
         case 3:
             msg = @"Invalid APIKey";
+            //REMOVE THIS ALERT WHEN RELEASING
             [[[UIAlertView alloc] initWithTitle:@"Invalid apiKey!"
                                         message:@""
                                        delegate:nil
