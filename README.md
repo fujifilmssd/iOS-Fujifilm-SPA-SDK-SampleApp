@@ -77,7 +77,7 @@ In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it usi
 ```objective-c
 Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]         
         initWithApiKey: @"YOUR_API_KEY"
-        environment:  @"preview"
+        environment:  @"Preview"
         images: NS_ARRAY_OF_IMAGES
         userID: @"" //optional
         retainUserInfo: YES
@@ -259,34 +259,6 @@ pod "Fujifilm-SPA-SDK"
 
 ```objective-c
 - (IBAction)launchFujifilmSDK:(id)sender {
-      NSArray *images = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
-   
-      /*
-      -------------------------------------------------------------------------------
-      Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.
-      -------------------------------------------------------------------------------
-      
-      - Go to http://www.fujifilmapi.com to register for an apiKey.
-      - Ensure you have the right apiKey for the right environment.
-     //MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
-      Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]         
-        initWithApiKey: @"YOUR_API_KEY"
-        environment:  @"preview"
-        images: images
-        userID: @"" //optional
-        retainUserInfo: YES
-        promoCode: @"" //optional
-        launchPage: kHome
-        extraOptions: nil];
-      
-      fujifilmOrderController.delegate = self;
-      //Create a new FujifilmSPASDKNavigation Controller with the orderController as its root
-        FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
-        /*
-        ---------------------------------------------------------------------------------------
-        Present the Fujifilm SPA SDK Navigation Controller
-        -----------------------------------------------------------------------------------
-- (IBAction)launchFujifilmSDK:(id)sender {
     NSArray *images = [[NSArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
     
     /*
@@ -300,7 +272,7 @@ pod "Fujifilm-SPA-SDK"
      */
      Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
      initWithApiKey: @"YOUR_API_KEY"
-     environment:  @"preview"
+     environment:  @"Preview"
      images: images
      userID: @"" //optional
      retainUserInfo: YES
