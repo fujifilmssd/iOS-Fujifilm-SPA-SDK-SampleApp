@@ -242,8 +242,7 @@ You can enter this manually using the Xcode UI, or you can open the Info.plist f
 ##### Podfile
 
 ```ruby 
-platform :ios, '9.0'
-pod "Fujifilm-SPA-SDK"
+pod 'Fujifilm-SPA-SDK', '~> 1.3'
 ```
 
 ##### ViewController.h
