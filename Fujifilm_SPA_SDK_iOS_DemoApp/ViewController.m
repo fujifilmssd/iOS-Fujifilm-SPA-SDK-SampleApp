@@ -6,31 +6,41 @@
 //
 
 #import "ViewController.h"
+#import <AVFoundation/AVFoundation.h>
 
 @interface ViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *imageViewer;
-@property (weak, nonatomic) IBOutlet UISegmentedControl *environmentControl;
-@property (weak, nonatomic) IBOutlet UITextField *apiKeyText;
-@property (weak, nonatomic) IBOutlet UITextField *userIdText;
+//@property (weak, nonatomic) IBOutlet UISegmentedControl *environmentControl;
+@property (weak, nonatomic) IBOutlet UIView *tableView;
+@property (weak, nonatomic) IBOutlet UICollectionView *imageCarousel;
+//@property (weak, nonatomic) IBOutlet UIView *imageCarouselView;
 @property (strong, nonatomic) UIActionSheet *attachmentMenuSheet;
 @property (strong, nonatomic) UIImagePickerController *cameraPicker;
 @property(nonatomic, strong) NSMutableArray *imageAssets;
+@property(nonatomic, strong) NSMutableArray *thumbnails;
 @property (weak, nonatomic) IBOutlet UIButton *orderButton;
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
+@property (nonatomic) CGFloat carouselWidth;
+@property (nonatomic) SettingsViewController *settingsViewController;
 @end
 
 @implementation ViewController
 @synthesize attachmentMenuSheet;
 @synthesize cameraPicker;
+@synthesize carouselWidth;
 
-- (void)viewDidLoad {
+- (void)viewDidLoad{
     [super viewDidLoad];
-    [self.apiKeyText setDelegate:self];
-    [self.userIdText setDelegate:self];
     self.imageAssets = [NSMutableArray array];
-    
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWasShown:) name:UIKeyboardWillShowNotification object:nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardWillHide:) name:UIKeyboardWillHideNotification object:nil];
+    self.thumbnails = [NSMutableArray array];
+    [self.imageCarousel reloadData];
+}
+
+- (void) prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    NSString * segueName = segue.identifier;
+    if ([segueName isEqualToString: @"settings_controller"]) {
+        self.settingsViewController = (SettingsViewController *) [segue destinationViewController];
+    }
 }
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
@@ -38,41 +48,57 @@
 #pragma mark - Button Actions
 - (IBAction)orderButtonTapped:(id)sender {
     
-    if(self.imageAssets != nil && self.imageAssets.count>0 && self.apiKeyText.text.length > 0) {
+    if(self.imageAssets != nil && self.imageAssets.count>0 && [self.settingsViewController getApiKey].length > 0) {
         /*
-         ---------------------------------------------------------------------------------------
-         Creates a Fujifilm_SPA_SDK_iOS instance that handles all order checkout process.
-         ---------------------------------------------------------------------------------------
-         *Note* : All parameters are required.
+         -------------------------------------------------------------------------------
+         Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.
+         -------------------------------------------------------------------------------
          
          - Go to http://www.fujifilmapi.com to register for an apiKey.
          - Ensure you have the right apiKey for the right environment.
          
-         @param apiKey: Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com
-         @param environment: A string indicating which environment your app runs in. Must match your app’s environment set on http://fujifilmapi.com. Possible values are “test” or “live”.
-         @param images: An NSArray of PHAsset, ALAsset, or NSString (public image urls http://). (Array can contain combination of types). Images must be JPG format and smaller than 20MB.
-         @param userid: Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters
-         @return Fujifilm_SPA_SDK_iOS object
+         @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
+         @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
+         @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
+         @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
+         @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
+         @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
+         @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
+         @param extraOptions: for future use, nil is the only acceptable value currently
+         extraOptions: for future use, nil is the only acceptable value currently
          *---------------------------------------------------------------------------------------
          
-        Example using public urls
+         Example using public urls
          // self.imageAssets = [[NSMutableArray alloc] initWithObjects:@"https://pixabay.com/static/uploads/photo/2015/09/05/21/08/fujifilm-925350_960_720.jpg",@"https://pixabay.com/static/uploads/photo/2016/02/07/12/02/mustang-1184505_960_720.jpg", nil];
          
-        */
+         */
+        LaunchPage page = kHome;
+        if ([self.settingsViewController.launchPage isEqualToString:@"Cart"]) {
+            page = kCart;
+        }
         
-        NSString *environment = self.environmentControl.selectedSegmentIndex == 0 ? @"live" : @"test";
         
-        Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithOptions:self.apiKeyText.text environment:environment images:self.imageAssets userID:self.userIdText.text];
+        Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithApiKey: [self.settingsViewController getApiKey]
+                                                                                         environment:  [self.settingsViewController getEnvironment]
+                                                                                              images: self.imageAssets
+                                                                                              userID: [self.settingsViewController getUserId]
+                                                                                      retainUserInfo: [self.settingsViewController getRetainUserInfo]
+                                                                                           promoCode: [self.settingsViewController getPromoCode]
+                                                                                          launchPage: page
+                                                                                        extraOptions: nil];
         fujifilmOrderController.delegate = self;
+        
+        FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
+        
+        
         /*
          ---------------------------------------------------------------------------------------
          Present the Fujifilm SPA SDK
          ---------------------------------------------------------------------------------------
          */
-        [self presentViewController:fujifilmOrderController animated:YES completion:nil];
-        
+        [self presentViewController:navController animated:YES completion:nil];
     }
-    else if (self.apiKeyText.text.length == 0) {
+    else if ([self.settingsViewController getApiKey].length == 0) {
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Please enter an apiKey!"
                                                           message:@""
                                                          delegate:nil
@@ -114,17 +140,17 @@
             [self dismissViewControllerAnimated:YES completion:^{
             }];
         }];
-
+        
         [actionSheet addAction:cancelAction];
         
         [actionSheet addAction:[UIAlertAction actionWithTitle:@"Take Photo" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
             [self dismissViewControllerAnimated:YES completion:^{}];
             [self openCamera];
-            }]];
-
+        }]];
+        
         [actionSheet addAction:[UIAlertAction actionWithTitle:@"Photo Library" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) { [self dismissViewControllerAnimated:YES completion:^{}];
             [self openPhotoPicker];
-            }]];
+        }]];
         
         // Present action sheet.
         [self presentViewController:actionSheet animated:YES completion:nil];
@@ -132,16 +158,16 @@
     }
 }
 - (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex {
-        switch (buttonIndex) {
-            case 0:
-                [self openCamera];
-                break;
-            case 1:
-                [self openPhotoPicker];
-                break;
-            default:
-                break;
-        }
+    switch (buttonIndex) {
+        case 0:
+            [self openCamera];
+            break;
+        case 1:
+            [self openPhotoPicker];
+            break;
+        default:
+            break;
+    }
 }
 
 -(IBAction) openPhotoPicker {
@@ -205,12 +231,47 @@
 }
 
 -(IBAction)openCamera {
+    // Can't use camera if we don't have access to pull the photo afterwards.
+    if (!self.isPhotoAccessAvailable) {
+        UIAlertView *uialert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"This app needs permissions to photos in order to use the camera. Please enable access to photos and try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [uialert show];
+        return;
+    }
+    else {
+        [self displayCameraView];
+    }
+    
+    AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
+    
+    if (authStatus == AVAuthorizationStatusDenied) {
+        UIAlertView *uialert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Cannot open camera, permission has been denied. Please grant this app access to the camera in settings and try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+        [uialert show];
+    }
+    else if (authStatus == AVAuthorizationStatusNotDetermined) {
+        [AVCaptureDevice requestAccessForMediaType:AVMediaTypeVideo completionHandler:^(BOOL granted) {
+            if (granted) {
+                [self displayCameraView];
+            }
+            else {
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    UIAlertView *uialert = [[UIAlertView alloc] initWithTitle:@"Warning" message:@"Cannot open camera, permission has been denied." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [uialert show];
+                });
+            }
+        }];
+    }
+    else if (authStatus == AVAuthorizationStatusAuthorized) {
+        [self displayCameraView];
+    }
+}
+
+-(void)displayCameraView {
     cameraPicker = [[UIImagePickerController alloc] init];
     cameraPicker.delegate = self;
     cameraPicker.allowsEditing = NO;
     cameraPicker.sourceType = UIImagePickerControllerSourceTypeCamera;
     
-    [self presentViewController:cameraPicker animated:YES completion:NULL];
+    [self presentViewController:cameraPicker animated:YES completion:nil];
 }
 
 - (IBAction)addUrlTapped:(id)sender {
@@ -219,6 +280,7 @@
     uialert.tag = 1;
     UITextField *textField = [uialert textFieldAtIndex:0];
     textField.placeholder = @"Image URL";
+    textField.keyboardType = UIKeyboardTypeURL;
     [uialert show];
 }
 
@@ -277,11 +339,15 @@
         case kFujifilmSDKStatusCodeUploadFailed:
             msg = @"Upload Failed";
             break;
+        case kFujifilmSDKStatusCodeInvalidUserIDFormat:
+            msg = @"Invalid User ID Format";
+            break;
+        case kFujifilmSDKStatusCodeInvalidPromoCodeFormat:
+            msg = @"Invalid Promo Code Format";
+            break;
         default:
             msg = @"Unknown Error";
     }
-    
-    NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
     
     if(statusCode != kFujifilmSDKStatusCodeFatal
        && statusCode!= kFujifilmSDKStatusCodeOrderComplete
@@ -296,6 +362,8 @@
         
         [alert show];
     }
+}
+-(void) promoCodeDidFailValidationWithError:(int)error {
 }
 
 #pragma mark - UIAlertView Delegate
@@ -324,10 +392,9 @@
     //alertview with tag 2 = clear image dialog
     if(alertView.tag == 2 && buttonIndex == 1)
     {
-        [self.imageViewer stopAnimating];
-        self.imageViewer.animationImages = nil;
-        self.imageViewer.image = nil;
         self.imageAssets = [NSMutableArray array];
+        self.thumbnails = [NSMutableArray array];
+        [self.imageCarousel reloadData];
     }
 }
 
@@ -362,14 +429,29 @@
     ALAssetsLibrary* library=[ViewController defaultAssetsLibrary];
     NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
     [library writeImageToSavedPhotosAlbum:image.CGImage metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
-        [library assetForURL:assetURL resultBlock:^(ALAsset *asset ){
-            
-            [self.imageAssets addObject:asset];
-            [self setImageViewerImages];
+        if (error != nil) {
+            // Errored out here. Could be some unknown reason or because the user denied permission to photos.
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (!self.isPhotoAccessAvailable) {
+                    UIAlertView *uiAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot access picture taken from camera, permission to photos is required. Please allow access to photos in settings and try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [uiAlert show];
+                }
+                else {
+                    UIAlertView *uiAlert = [[UIAlertView alloc] initWithTitle:@"Unknown error" message:@"An unknown error has occured. Please try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
+                    [uiAlert show];
+                }
+            });
         }
-                failureBlock:^(NSError *error ) {
-                    NSLog(@"Error saving image to Camera Roll!");
-                }];
+        else {
+            [library assetForURL:assetURL resultBlock:^(ALAsset *asset ){
+                
+                [self.imageAssets addObject:asset];
+                [self setImageViewerImages];
+            }
+                    failureBlock:^(NSError *error ) {
+                        NSLog(@"Error saving image to Camera Roll!");
+                    }];
+        }
     }];
     
     [self imagePickerControllerDidCancel:picker];
@@ -387,53 +469,100 @@
     if(self.imageAssets != nil && self.imageAssets.count >0){
         double delayInSeconds = 0.1;
         dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-        dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND,0), ^(void){
+        dispatch_after(popTime, dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0), ^(void){
             
-            NSMutableArray *thumbnails = [[NSMutableArray alloc] init];
-            
+            NSMutableArray *tempThumbnails = [NSMutableArray array];
+            NSMutableArray *invalidImages = [NSMutableArray array];
             for(id object in self.imageAssets){
-                if([object isKindOfClass:[PHAsset class]]) {
-                    PHImageRequestOptions *option = [PHImageRequestOptions new];
-                    option.synchronous = YES;
-                    option.resizeMode = PHImageRequestOptionsResizeModeFast;
-                    option.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-                    CGSize targetSize = CGSizeMake(400, 400);
-                    [[PHImageManager defaultManager] requestImageForAsset:object
-                                                               targetSize:targetSize
-                                                              contentMode:PHImageContentModeAspectFill
-                                                                  options:option
-                                                            resultHandler:^(UIImage *img, NSDictionary *info){
-                                                                if(img != nil){
-                                                                    [thumbnails addObject: img];
-                                                                }
-                                                                
-                                                            }];
-                }
-                else if([object isKindOfClass:[ALAsset class]]){
-                    //alasset
-                    ALAsset *asset = (ALAsset *) object;
-                    [thumbnails addObject: [UIImage imageWithCGImage: [asset thumbnail]]];
-                }
-                else if ([object isKindOfClass:[NSString class]]){
-                    //image url
-                    NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:object]];
-                    if(data != nil){
-                        UIImage *image = [UIImage imageWithData:data];
-                        if (image != nil) {
-                            [thumbnails addObject: image];
+                @autoreleasepool {
+                    if([object isKindOfClass:[PHAsset class]]) {
+                        PHImageRequestOptions *option = [PHImageRequestOptions new];
+                        option.synchronous = YES;
+                        option.resizeMode = PHImageRequestOptionsResizeModeFast;
+                        option.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+                        CGSize targetSize = CGSizeMake(60, 60);
+                        [[PHImageManager defaultManager] requestImageForAsset:object
+                                                                   targetSize:targetSize
+                                                                  contentMode:PHImageContentModeAspectFill
+                                                                      options:option
+                                                                resultHandler:^(UIImage *img, NSDictionary *info){
+                                                                    if(img != nil){
+                                                                        [tempThumbnails addObject: img];
+                                                                    } else {
+                                                                        [invalidImages addObject:object];
+                                                                    }
+                                                                    
+                                                                }];
+                    }
+                    else if([object isKindOfClass:[ALAsset class]]){
+                        //alasset
+                        ALAsset *asset = (ALAsset *) object;
+                        UIImage *img = [UIImage imageWithCGImage: [asset thumbnail]];
+                        if (img != nil) {
+                            [tempThumbnails addObject: img];
+                        } else {
+                            [invalidImages addObject:object];
+                        }
+                        
+                    }
+                    else if ([object isKindOfClass:[NSString class]]){
+                        //image url
+                        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:object]];
+                        if(data != nil){
+                            UIImage *image = [UIImage imageWithData:data];
+                            if (image != nil) {
+                                CGSize destinationSize = CGSizeMake(60, 60);
+                                UIGraphicsBeginImageContext(destinationSize);
+                                [image drawInRect:CGRectMake(0,0,destinationSize.width,destinationSize.height)];
+                                [tempThumbnails addObject: UIGraphicsGetImageFromCurrentImageContext()];
+                                UIGraphicsEndImageContext();
+                            } else {
+                                [invalidImages addObject:object];
+                            }
+                        } else {
+                            [invalidImages addObject:object];
                         }
                     }
                 }
+                
             }
-            if(thumbnails.count>0){
-                self.imageViewer.image = [thumbnails objectAtIndex:0];
-                self.imageViewer.animationImages = thumbnails;
-                self.imageViewer.animationDuration = thumbnails.count;
-                self.imageViewer.animationRepeatCount = 1;
-                [self.imageViewer startAnimating];
-            }
+            [self.imageAssets removeObjectsInArray:invalidImages];
+            dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0), dispatch_get_main_queue(), ^(void){
+                self.thumbnails = [NSMutableArray array];
+                [self.thumbnails addObjectsFromArray:tempThumbnails];
+                [self.imageCarousel reloadData];
+                
+            });
+            
         });
     }
+}
+-(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    
+    
+    
+    static NSString *cellIdentifier = @"ITCell";
+    
+    UICollectionViewCell *cell = [collectionView  dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
+    for (UIView *v in [cell subviews]){
+        [v removeFromSuperview];
+        
+    }
+    if (indexPath.row < self.thumbnails.count) {
+        UIImageView *view = [[UIImageView alloc]initWithFrame:CGRectMake(0, 0, 60, 60)];
+        view.image = [self.thumbnails objectAtIndex:indexPath.row];
+        [cell addSubview:view];
+    }
+    
+    
+    return cell;
+    
+}
+-(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
+-(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return [self.thumbnails count];
 }
 + (ALAssetsLibrary *)defaultAssetsLibrary {
     static dispatch_once_t pred = 0;
@@ -442,33 +571,6 @@
         library = [[ALAssetsLibrary alloc] init];
     });
     return library;
-}
-- (BOOL)textFieldShouldReturn:(UITextField *)textField {
-    [textField resignFirstResponder];
-    return NO;
-}
-
--(void)setViewMovedUp:(CGFloat)keyboardSize
-{
-    CGRect rect = self.view.frame;
-    if (keyboardSize == 0) {
-        rect.origin.y = 0;
-    } else if ((rect.origin.y >=0 && keyboardSize > 0)) {
-        rect.origin.y -= keyboardSize;
-    }
-    self.view.frame = rect;
-}
-- (void)keyboardWasShown:(NSNotification *)notification {
-    CGFloat keyboardHeight = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    keyboardHeight -= self.orderButton.bounds.size.height;
-    keyboardHeight -= self.toolbar.bounds.size.height;
-    [self setViewMovedUp:keyboardHeight];
-}
-- (void)keyboardWillHide:(NSNotification *)notification {
-    CGFloat keyboardHeight = [notification.userInfo[UIKeyboardFrameEndUserInfoKey] CGRectValue].size.height;
-    keyboardHeight -= self.orderButton.bounds.size.height;
-    keyboardHeight -= self.toolbar.bounds.size.height;
-    [self setViewMovedUp:0];
 }
 
 @end

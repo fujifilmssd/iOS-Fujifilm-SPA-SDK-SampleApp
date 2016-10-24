@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2985F1891DBD8C9300103EBD /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2985F1881DBD8C9300103EBD /* SettingsViewController.m */; };
 		29F2A0B81CA2DF20008F275C /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 29F2A0B71CA2DF20008F275C /* README.md */; };
 		29F2A0BF1CA307A9008F275C /* LICENSE.md in Sources */ = {isa = PBXBuildFile; fileRef = 29F2A0BE1CA307A9008F275C /* LICENSE.md */; };
 		29F5EB021C4BEEC800067F84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5EB011C4BEEC800067F84 /* main.m */; };
@@ -90,6 +91,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		2985F1871DBD8C9300103EBD /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
+		2985F1881DBD8C9300103EBD /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
 		29F2A0B71CA2DF20008F275C /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		29F2A0BE1CA307A9008F275C /* LICENSE.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = LICENSE.md; sourceTree = "<group>"; };
 		29F5EAFD1C4BEEC800067F84 /* Fujifilm SDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fujifilm SDK.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -277,6 +280,8 @@
 				29F5EB041C4BEEC800067F84 /* AppDelegate.m */,
 				29F5EB061C4BEEC800067F84 /* ViewController.h */,
 				29F5EB071C4BEEC800067F84 /* ViewController.m */,
+				2985F1871DBD8C9300103EBD /* SettingsViewController.h */,
+				2985F1881DBD8C9300103EBD /* SettingsViewController.m */,
 				29F5EB091C4BEEC800067F84 /* Main.storyboard */,
 				29F5EB0C1C4BEEC800067F84 /* Assets.xcassets */,
 				29F5EB0E1C4BEEC800067F84 /* LaunchScreen.storyboard */,
@@ -589,6 +594,7 @@
 				29F5EB081C4BEEC800067F84 /* ViewController.m in Sources */,
 				29F5EBE01C4C029D00067F84 /* UICollectionView+CTAssetsPickerController.m in Sources */,
 				29F5EBE51C4C029D00067F84 /* CTAssetCollectionViewController.m in Sources */,
+				2985F1891DBD8C9300103EBD /* SettingsViewController.m in Sources */,
 				29F5EBE11C4C029D00067F84 /* UIImage+CTAssetsPickerController.m in Sources */,
 				29F5EBEF1C4C029D00067F84 /* CTAssetsGridViewFooter.m in Sources */,
 				29F5EC3B1C4C07DC00067F84 /* ALView+PureLayout.m in Sources */,
