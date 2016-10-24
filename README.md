@@ -76,7 +76,7 @@ In your view controller header file, ensure it implements the FujifilmSPASDKDele
 In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it using the initWithApiKey method:
 ```objective-c
 Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]         
-        initWithApiKey: @"YOUR_API_KEY"
+        initWithApiKey: @"YOUR_API_KEY" //REPLACE with YOUR ApiKey
         environment:  @"Preview"
         images: NS_ARRAY_OF_IMAGES
         userID: @"" //optional
@@ -271,7 +271,7 @@ pod "Fujifilm-SPA-SDK"
      //MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
      */
      Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
-     initWithApiKey: @"YOUR_API_KEY"
+     initWithApiKey: @"5cb79d2191874aca879e2c9ed7d5747c"
      environment:  @"Preview"
      images: images
      userID: @"" //optional
