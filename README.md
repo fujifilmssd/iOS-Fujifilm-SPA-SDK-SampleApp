@@ -63,6 +63,41 @@ Upon successful installation, close your Xcode project if it is open, and open t
         - Photos
     * To add frameworks,, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
 
+### Step 3: Updating info.plist file
+In order to use the SDK you will need to add 4 keys to your project's info plist file.
+
+You can enter these manually using the Xcode UI, or you can open the info.plist file in a text editor and copy/paste the following in the inside the <plist> <dict> tag:
+```
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please enable this feature to search for stores near you when creating personalized prints and gifts.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Please enable this feature to access your contacts when creating personalized prints and gifts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please enable this feature to be able to upload your photos and create personalized prints and gifts.</string>
+   <key>NSAppTransportSecurity</key>
+    <dict>
+        <key>NSAllowsArbitraryLoads</key>
+        <true/>
+        <key>NSExceptionDomains</key>
+        <dict>
+            <key>paypal.com</key>
+            <dict>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+                <key>fujifilmesys.com</key>
+            <dict>
+                <key>NSExceptionRequiresForwardSecrecy</key>
+                <false/>
+                <key>NSIncludesSubdomains</key>
+                <true/>
+            </dict>
+        </dict>
+    </dict>
+```
+
 ### Step 4: Integrate with SDK
 
 In your view controller header file, import the SDK:
@@ -200,13 +235,18 @@ This method is called when a promotion code that is passed in fails validation i
 }
 
 ```
+#### Updating info.plist file
+In order to use the SDK you will need to add 4 keys to your project's info plist file.
 
-#### iOS 9+ Security - Updating info.plist
-Xcode 7 includes a new security feature called App Transport Security. In order to use the SDK you will need to add exceptions to your project's info plist file.
-
-You can enter this manually using the Xcode UI, or you can open the Info.plist file in a text editor and copy/paste the following in the inside the <plist> <dict> tag:
+You can enter these manually using the Xcode UI, or you can open the info.plist file in a text editor and copy/paste the following in the inside the <plist> <dict> tag:
 ```
-    <key>NSAppTransportSecurity</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please enable this feature to search for stores near you when creating personalized prints and gifts.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Please enable this feature to access your contacts when creating personalized prints and gifts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please enable this feature to be able to upload your photos and create personalized prints and gifts.</string>
+   <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
@@ -228,15 +268,6 @@ You can enter this manually using the Xcode UI, or you can open the Info.plist f
             </dict>
         </dict>
     </dict>
-```
-
-### iOS 8+ Location Services - Updating info.plist
-With the introduction of iOS 8 a change was made to the Location Services.  To be able to properly utilize the Location Services you will need to add a key to your project’s info plist file.
-
-You can enter this manually using the Xcode UI, or you can open the Info.plist file in a text editor and copy/paste the following in the inside the <plist> <dict> tag:
-```
-   <key>NSLocationWhenInUseUsageDescription</key>
-   <string>Find near me</string>
 ```
 
 #### Full Example Code
@@ -336,7 +367,13 @@ pod 'Fujifilm-SPA-SDK', '~> 1.3'
 
 ##### Info.plist
 ```
-    <key>NSAppTransportSecurity</key>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Please enable this feature to search for stores near you when creating personalized prints and gifts.</string>
+	<key>NSContactsUsageDescription</key>
+	<string>Please enable this feature to access your contacts when creating personalized prints and gifts.</string>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Please enable this feature to be able to upload your photos and create personalized prints and gifts.</string>
+   <key>NSAppTransportSecurity</key>
     <dict>
         <key>NSAllowsArbitraryLoads</key>
         <true/>
@@ -358,9 +395,6 @@ pod 'Fujifilm-SPA-SDK', '~> 1.3'
             </dict>
         </dict>
     </dict>
-   
-   <key>NSLocationWhenInUseUsageDescription</key>
-   <string>Find near me</string>
 ```
 
 ## Additional notes and debugging help
@@ -374,7 +408,7 @@ The following are some notes to help with integrating with **Fujifilm SPA iOS SD
 + The maximum size of a single file is 20MB
 
 ### General Errors
-+ Ensure that you updated your Info.plist with required data listed above (NSAppTransportSecurity and NSLocationWhenInUseUsageDescription.
++ Ensure that you updated your Info.plist with required data listed above (NSAppTransportSecurity, NSLocationWhenInUseUsageDescription, NSContactsUsageDescription, and NSPhotoLibraryUsageDescription,
 
 ### Errors that prevent the SDK from Starting
 + 0 valid images
