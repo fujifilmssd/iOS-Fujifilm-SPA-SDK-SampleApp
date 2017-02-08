@@ -11,7 +11,7 @@
 		<key>NSExceptionDomains</key>
 		<dict>
 			<key>fujifilmesys.com</key>
-			<dict>
+			<dict>				<key>NSExceptionAllowsInsecureHTTPLoads</key>				<true/>
 				<key>NSExceptionRequiresForwardSecrecy</key>
 				<false/>
 				<key>NSIncludesSubdomains</key>
