@@ -237,42 +237,6 @@ This method is called when a promotion code that is passed in fails validation i
 }
 
 ```
-#### Updating info.plist file
-In order to use the SDK you will need to add 4 keys to your project's info plist file.
-
-You can enter these manually using the Xcode UI, or you can open the info.plist file in a text editor and copy/paste the following in the inside the <plist> <dict> tag:
-```
-	<key>NSLocationWhenInUseUsageDescription</key>
-	<string>Please enable this feature to search for stores near you when creating personalized prints and gifts.</string>
-	<key>NSContactsUsageDescription</key>
-	<string>Please enable this feature to access your contacts when creating personalized prints and gifts.</string>
-	<key>NSPhotoLibraryUsageDescription</key>
-	<string>Please enable this feature to be able to upload your photos and create personalized prints and gifts.</string>
-	<key>NSAppTransportSecurity</key>
-	<dict>
-		<key>NSAllowsArbitraryLoads</key>
-		<true/>
-		<key>NSExceptionDomains</key>
-		<dict>
-			<key>fujifilmesys.com</key>
-			<dict>
-				<key>NSExceptionAllowsInsecureHTTPLoads</key>
-				<true/>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
-			<key>paypal.com</key>
-			<dict>
-				<key>NSExceptionRequiresForwardSecrecy</key>
-				<false/>
-				<key>NSIncludesSubdomains</key>
-				<true/>
-			</dict>
-		</dict>
-	</dict>
-```
 
 #### Full Example Code
 
