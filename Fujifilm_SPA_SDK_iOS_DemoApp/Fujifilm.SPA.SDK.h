@@ -4,6 +4,8 @@
 //  Created by Jonathan Nick on 1/7/16.
 //  Copyright (c) 2016 FUJIFILM North America Corp. All rights reserved.
 //
+
+#import <UIKit/UIKit.h>
 static NSString *const kSiteDeepLink                                   = @"SiteDeepLink";
 static NSString *const kSPAOverrideURL                                 = @"SPAOverrideURL";
 /** The FujifilmSPASDKDelegate protocol defines methods that your delegate object must implement to interact with the Fujifilm SPA SDK interface. The methods of this protocol notify your delegate when the user exits the checkout flow or when an error occurs. See documentation for details on status codes.
