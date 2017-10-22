@@ -129,7 +129,7 @@ To accept payments from PayPal, you must register a URL type and configure your 
 **Important**: If you have multiple app targets, be sure to add the URL type for all of the targets.
 
 ### Step 5: Integrate with SDK - Objective-C
-If your app is Swift, you can following the instructions found here:  [Swift Integration](https://github.com/fujifilmssd/SwiftSupport).
+If your app is Swift, you can following the instructions found here:  [Swift Integration](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/tree/master/SwiftSupport).
 
 In your view controller header file, import the SDK:
 ```objective-c
