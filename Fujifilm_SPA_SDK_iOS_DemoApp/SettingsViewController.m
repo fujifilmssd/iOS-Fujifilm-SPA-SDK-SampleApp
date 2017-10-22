@@ -2,13 +2,13 @@
 //  SettingsViewController.m
 //  Fujifilm_SPA_SDK_iOS_DemoApp
 //
-//  Copyright (c) 2016 FUJIFILM North America Corp. All rights reserved.
+//  Created by Sam on 4/1/16.
+//  Copyright © 2016 ___Fujifilm___. All rights reserved.
 //
 
 #import "SettingsViewController.h"
 
 @implementation SettingsViewController
-
 
 -(void) viewDidLoad {
     [self.tableView setDelegate:self];
@@ -25,7 +25,7 @@
     if ([UIScreen mainScreen].bounds.size.height <= 500) {
         return 1.0;
     } else {
-        return 18.0;
+        return 1.0;
     }
 }
 
@@ -37,8 +37,16 @@
     return self.userID.text;
 }
 
+-(NSString *) getUrl {
+    return self.url.text;
+}
+
 -(BOOL) getRetainUserInfo {
     return [self.retainUserInfo isOn];
+}
+
+-(NSNumber *) getEnableAddMorePhotos {
+    return [NSNumber numberWithBool:[self.enableAddMorePhotos isOn]];
 }
 
 -(NSString *) getEnvironment {

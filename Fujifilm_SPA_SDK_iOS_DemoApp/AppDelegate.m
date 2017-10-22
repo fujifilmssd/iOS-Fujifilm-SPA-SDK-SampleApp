@@ -6,16 +6,20 @@
 //
 
 #import "AppDelegate.h"
+#import "Fujifilm_SPA_SDK_iOS_AppSwitch.h"
 
 @interface AppDelegate ()
 
 @end
 
+//This needs to match what is set in info.plist CFBundleURLSchemes
+NSString *FujifilmSPASDKDelegatePaymentsURLScheme = @"com.fujifilm.spa.sdk.sample.FujifilmSDK.Payments";
+
 @implementation AppDelegate
 
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-
+    [Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:FujifilmSPASDKDelegatePaymentsURLScheme];
     return YES;
 }
 
@@ -39,6 +43,28 @@
 
 - (void)applicationWillTerminate:(UIApplication *)application {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#if __IPHONE_OS_VERSION_MAX_ALLOWED >= 90000
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+            options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
+    if ([url.scheme localizedCaseInsensitiveCompare:FujifilmSPASDKDelegatePaymentsURLScheme] == NSOrderedSame) {
+        return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url options:options];
+    }
+    return NO;
+}
+#endif
+
+// If you support iOS 7 or 8, add the following method.
+- (BOOL)application:(UIApplication *)application
+            openURL:(NSURL *)url
+  sourceApplication:(NSString *)sourceApplication
+         annotation:(id)annotation {
+    if ([url.scheme localizedCaseInsensitiveCompare:FujifilmSPASDKDelegatePaymentsURLScheme] == NSOrderedSame) {
+        return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url sourceApplication:sourceApplication];
+    }
+    return NO;
 }
 
 @end

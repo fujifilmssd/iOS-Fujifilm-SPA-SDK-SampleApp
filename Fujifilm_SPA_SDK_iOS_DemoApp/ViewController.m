@@ -48,7 +48,7 @@
 #pragma mark - Button Actions
 - (IBAction)orderButtonTapped:(id)sender {
     
-    if(self.imageAssets != nil && self.imageAssets.count>0 && [self.settingsViewController getApiKey].length > 0) {
+    if(self.imageAssets != nil && (self.imageAssets.count>0 || [[self.settingsViewController getEnableAddMorePhotos] boolValue]) && [self.settingsViewController getApiKey].length > 0) {
         /*
          -------------------------------------------------------------------------------
          Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.
@@ -56,6 +56,7 @@
          
          - Go to http://www.fujifilmapi.com to register for an apiKey.
          - Ensure you have the right apiKey for the right environment.
+         
          
          @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
          @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
@@ -65,12 +66,12 @@
          @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
          @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
          @param extraOptions: for future use, nil is the only acceptable value currently
-         extraOptions: for future use, nil is the only acceptable value currently
          *---------------------------------------------------------------------------------------
          
          Example using public urls
          self.imageAssets =  [[NSMutableArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
          
+
          
          */
         LaunchPage page = kHome;
@@ -78,7 +79,10 @@
             page = kCart;
         }
         
-        
+        NSMutableDictionary<NSString *, id> *extraOptions = [NSMutableDictionary new];
+        [extraOptions setValue: [self.settingsViewController getDeepLink] forKey: kSiteDeepLink];
+        [extraOptions setValue: [self.settingsViewController getUrl] forKey: kSPAOverrideURL];
+        [extraOptions setValue: [self.settingsViewController getEnableAddMorePhotos] forKey:@"enableAddMorePhotos"];
         Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithApiKey: [self.settingsViewController getApiKey]
                                                                                          environment:  [self.settingsViewController getEnvironment]
                                                                                               images: self.imageAssets
@@ -86,11 +90,10 @@
                                                                                       retainUserInfo: [self.settingsViewController getRetainUserInfo]
                                                                                            promoCode: [self.settingsViewController getPromoCode]
                                                                                           launchPage: page
-                                                                                        extraOptions: nil];
+                                                                                        extraOptions: extraOptions];
         fujifilmOrderController.delegate = self;
         
         FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
-        
         
         /*
          ---------------------------------------------------------------------------------------
@@ -170,78 +173,71 @@
             break;
     }
 }
+-(void) openPhotoPickerHelper {
 
--(IBAction) openPhotoPicker {
-    if(self.isPhotoAccessAvailable){
-        if(NSFoundationVersionNumber < NSFoundationVersionNumber_iOS_8_3){
-            AGImagePickerController *agImagePickerController = [[AGImagePickerController alloc] initWithFailureBlock:^(NSError *error) {
-                if (error == nil) {
-                    NSLog(@"User has cancelled.");
-                    [self dismissViewControllerAnimated:YES completion:nil];
-                } else {
-                    NSLog(@"Error: %@", error);
-                    
-                    double delayInSeconds = 0.5;
-                    dispatch_time_t popTime = dispatch_time(DISPATCH_TIME_NOW, delayInSeconds * NSEC_PER_SEC);
-                    dispatch_after(popTime, dispatch_get_main_queue(), ^(void){
-                        [self dismissViewControllerAnimated:YES completion:nil];
-                    });
-                }
-                
-            } andSuccessBlock:^(NSArray *info) {
-                NSLog(@"Info: %@", info);
-                [self dismissViewControllerAnimated:YES completion:nil];
-            }];
-            [agImagePickerController setDelegate:self];
-            [agImagePickerController setShouldChangeStatusBarStyle:NO];
-            [agImagePickerController setShouldDisplaySelectionInformation:NO];
-            agImagePickerController.toolbar.tintColor = [UIColor colorWithRed:135.0/255 green:180.0/255 blue:80.0/255 alpha:1.0];
-            agImagePickerController.navigationBar.tintColor = [UIColor colorWithRed:135.0/255 green:180.0/255 blue:80.0/255 alpha:1.0];
-            [self presentViewController:agImagePickerController animated:YES completion:nil];
-            
-        } else {
-            // init picker
-            CTAssetsPickerController *picker = [[CTAssetsPickerController alloc] init];
-            picker.delegate = self;
-            //hide empty albums
-            picker.showsEmptyAlbums = NO;
-            
-            // create options for fetching photo only
-            PHFetchOptions *fetchOptions = [PHFetchOptions new];
-            fetchOptions.predicate = [NSPredicate predicateWithFormat:@"mediaType = %i", PHAssetMediaTypeImage];
-            
-            // assign options
-            picker.assetsFetchOptions = fetchOptions;
-            
-            // to present picker as a form sheet in iPad
-            if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-                picker.modalPresentationStyle = UIModalPresentationFormSheet;
-            
-            // present picker
-            [self presentViewController:picker animated:YES completion:nil];
-        }
-    } else {
-        UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Please grant Photos Permission!"
-                                                          message:@""
-                                                         delegate:nil
-                                                cancelButtonTitle:@"OK"
-                                                otherButtonTitles:nil];
+        // init picker
+        QBImagePickerController *picker = [[QBImagePickerController alloc] init];
+        picker.delegate = self;
+        //hide empty albums
         
-        [message show];
+        
+        // assign options
+        picker.allowsMultipleSelection = YES;
+        picker.excludeEmptyAlbums = YES;
+        picker.mediaType = QBImagePickerMediaTypeImage;
+        picker.showsNumberOfSelectedItems = YES;
+        picker.minimumNumberOfSelection = 0;
+        picker.maximumNumberOfSelection = 100;
+        NSMutableArray* selectedIDs = [NSMutableArray new];
+        for (PHAsset* asset in self.imageAssets) {
+            [selectedIDs addObject:asset.localIdentifier];
+        }
+        [picker setSelectedItemsWithIDs:selectedIDs];
+        
+        // to present picker as a form sheet in iPad
+        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+            picker.modalPresentationStyle = UIModalPresentationFormSheet;
+        
+        // present picker
+        [self presentViewController:picker animated:YES completion:nil];
+    
+}
+-(IBAction) openPhotoPicker {
+    if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            if (status == PHAuthorizationStatusAuthorized) {
+                [self openPhotoPickerHelper];
+            }
+        }];
+    }
+    else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
+        [self openPhotoPickerHelper];
+    } else {
+        UIAlertController * alert=   [UIAlertController
+                                      alertControllerWithTitle:[NSString stringWithFormat:@"'%@' Needs Access to Your Photos",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]]
+                                      message:@"Please enable Photos permission in your settings to be able to choose images."
+                                      preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction
+                          actionWithTitle:@"Cancel"
+                          style:UIAlertActionStyleCancel
+                          handler:^(UIAlertAction * action)
+                          {
+                          }]
+         ];
+        [alert addAction:[UIAlertAction
+                          actionWithTitle:@"Go to Settings"
+                          style:UIAlertActionStyleDefault
+                          handler:^(UIAlertAction * action)
+                          {
+                              NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                              [[UIApplication sharedApplication] openURL:url];
+                          }]
+         ];
+        [self presentViewController:alert animated:YES completion:nil];
     }
 }
-
--(IBAction)openCamera {
-    // Can't use camera if we don't have access to pull the photo afterwards.
-    if (!self.isPhotoAccessAvailable) {
-        UIAlertView *uialert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"This app needs permissions to photos in order to use the camera. Please enable access to photos and try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-        [uialert show];
-        return;
-    }
-    else {
-        [self displayCameraView];
-    }
-    
+-(void) openCameraHelper {
+     [self displayCameraView];
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     
     if (authStatus == AVAuthorizationStatusDenied) {
@@ -264,6 +260,44 @@
     else if (authStatus == AVAuthorizationStatusAuthorized) {
         [self displayCameraView];
     }
+}
+-(IBAction)openCamera {
+    // Can't use camera if we don't have access to pull the photo afterwards.
+    if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusNotDetermined) {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            if (status == PHAuthorizationStatusAuthorized) {
+                [self openCameraHelper];
+            } else {
+                return;
+            }
+        }];
+    }
+    else if ([PHPhotoLibrary authorizationStatus] == PHAuthorizationStatusAuthorized) {
+        [self openCameraHelper];
+    } else {
+        UIAlertController * alert=   [UIAlertController
+                                      alertControllerWithTitle:[NSString stringWithFormat:@"'%@' Needs Access to Your Photos",[[[NSBundle mainBundle] infoDictionary] objectForKey:@"CFBundleDisplayName"]]
+                                      message:@"This app needs permissions to photos in order to use the camera. Please enable access to photos and try again."
+                                      preferredStyle:UIAlertControllerStyleAlert];
+        [alert addAction:[UIAlertAction
+                          actionWithTitle:@"Cancel"
+                          style:UIAlertActionStyleCancel
+                          handler:^(UIAlertAction * action)
+                          {
+                          }]
+         ];
+        [alert addAction:[UIAlertAction
+                          actionWithTitle:@"Go to Settings"
+                          style:UIAlertActionStyleDefault
+                          handler:^(UIAlertAction * action)
+                          {
+                              NSURL *url = [NSURL URLWithString:UIApplicationOpenSettingsURLString];
+                              [[UIApplication sharedApplication] openURL:url];
+                          }]
+         ];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
 }
 
 -(void)displayCameraView {
@@ -399,73 +433,43 @@
     }
 }
 
-#pragma mark - AGImagePicker Delegate
 
-- (void)agImagePickerController:(AGImagePickerController *)picker didFinishPickingMediaWithInfo:(NSArray *)info{
-    
-    for (ALAsset* asset in info) {
-        [self.imageAssets addObject:asset];
-    }
-    [self setImageViewerImages];
-}
-
-- (void)agImagePickerController:(AGImagePickerController *)picker didFail:(NSError *)error{
-    NSLog(@"AGImagePickerController Error %@", [error localizedDescription]);
-}
 
 #pragma mark - CTAssetsPicker Delegate
 
-- (void)assetsPickerController:(CTAssetsPickerController *)picker didFinishPickingAssets:(NSArray *)assets
+- (void)qb_imagePickerController:(QBImagePickerController *)imagePickerController didFinishPickingItems:(NSArray *)items
 {
-    [picker dismissViewControllerAnimated:YES completion:nil];
-    for (PHAsset* asset in assets) {
+    [imagePickerController dismissViewControllerAnimated:YES completion:nil];
+    for (PHAsset* asset in items) {
         [self.imageAssets addObject:asset];
     }
     [self setImageViewerImages];
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
-    // Request to save the image to camera roll
-    UIImage *image = [info objectForKey:UIImagePickerControllerOriginalImage];
-    ALAssetsLibrary* library=[ViewController defaultAssetsLibrary];
-    NSDictionary *metadata = [info objectForKey:UIImagePickerControllerMediaMetadata];
-    [library writeImageToSavedPhotosAlbum:image.CGImage metadata:metadata completionBlock:^(NSURL *assetURL, NSError *error) {
-        if (error != nil) {
-            // Errored out here. Could be some unknown reason or because the user denied permission to photos.
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (!self.isPhotoAccessAvailable) {
-                    UIAlertView *uiAlert = [[UIAlertView alloc] initWithTitle:@"Error" message:@"Cannot access picture taken from camera, permission to photos is required. Please allow access to photos in settings and try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                    [uiAlert show];
-                }
-                else {
-                    UIAlertView *uiAlert = [[UIAlertView alloc] initWithTitle:@"Unknown error" message:@"An unknown error has occured. Please try again." delegate:nil cancelButtonTitle:nil otherButtonTitles:@"OK", nil];
-                    [uiAlert show];
-                }
-            });
-        }
-        else {
-            [library assetForURL:assetURL resultBlock:^(ALAsset *asset ){
-                
-                [self.imageAssets addObject:asset];
-                [self setImageViewerImages];
-            }
-                    failureBlock:^(NSError *error ) {
-                        NSLog(@"Error saving image to Camera Roll!");
-                    }];
-        }
-    }];
-    
-    [self imagePickerControllerDidCancel:picker];
+    UIImageWriteToSavedPhotosAlbum([info objectForKey:UIImagePickerControllerOriginalImage], self, @selector(image:didFinishSavingWithError:contextInfo:), NULL);
+    [self dismissViewControllerAnimated:YES completion:nil];
 }
-
--(void)imagePickerControllerDidCancel:(UIImagePickerController *)  picker {
+- (void)image:(UIImage *)image didFinishSavingWithError:(NSError *)error contextInfo:(void *)contextInfo;
+{
+    if (!error) {
+        //We want the PHAsset (not the UIImage), so fetch the first image when sorted by creation date
+        PHFetchOptions *fetchOptions = [PHFetchOptions new];
+        fetchOptions.sortDescriptors = @[[NSSortDescriptor sortDescriptorWithKey:@"creationDate" ascending:NO]];
+        PHAsset *asset = [PHAsset fetchAssetsWithMediaType:PHAssetMediaTypeImage options:fetchOptions].firstObject;
+        if (asset != nil) {
+            [self.imageAssets addObject:asset];
+            [self setImageViewerImages];
+        }
+    } else {
+        NSLog(@"save image error: %@", error);
+    }
+}
+-(void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController {
     [self dismissViewControllerAnimated:YES completion:nil];
 }
 
 #pragma mark - Helpers
--(BOOL)isPhotoAccessAvailable {
-    return [ALAssetsLibrary authorizationStatus] != ALAuthorizationStatusDenied ? YES: NO;
-}
 - (void) setImageViewerImages{
     if(self.imageAssets != nil && self.imageAssets.count >0){
         double delayInSeconds = 0.1;
@@ -495,17 +499,17 @@
                                                                     
                                                                 }];
                     }
-                    else if([object isKindOfClass:[ALAsset class]]){
-                        //alasset
-                        ALAsset *asset = (ALAsset *) object;
-                        UIImage *img = [UIImage imageWithCGImage: [asset thumbnail]];
-                        if (img != nil) {
-                            [tempThumbnails addObject: img];
-                        } else {
-                            [invalidImages addObject:object];
-                        }
-                        
-                    }
+//                    else if([object isKindOfClass:[ALAsset class]]){
+//                        //alasset
+//                        ALAsset *asset = (ALAsset *) object;
+//                        UIImage *img = [UIImage imageWithCGImage: [asset thumbnail]];
+//                        if (img != nil) {
+//                            [tempThumbnails addObject: img];
+//                        } else {
+//                            [invalidImages addObject:object];
+//                        }
+//                        
+//                    }
                     else if ([object isKindOfClass:[NSString class]]){
                         //image url
                         NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:object]];
@@ -565,13 +569,13 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.thumbnails count];
 }
-+ (ALAssetsLibrary *)defaultAssetsLibrary {
-    static dispatch_once_t pred = 0;
-    static ALAssetsLibrary *library = nil;
-    dispatch_once(&pred, ^{
-        library = [[ALAssetsLibrary alloc] init];
-    });
-    return library;
-}
+//+ (ALAssetsLibrary *)defaultAssetsLibrary {
+//    static dispatch_once_t pred = 0;
+//    static ALAssetsLibrary *library = nil;
+//    dispatch_once(&pred, ^{
+//        library = [[ALAssetsLibrary alloc] init];
+//    });
+//    return library;
+//}
 
 @end

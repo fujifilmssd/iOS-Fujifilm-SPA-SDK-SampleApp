@@ -4,6 +4,8 @@
 //  Created by Jonathan Nick on 1/7/16.
 //  Copyright (c) 2016 FUJIFILM North America Corp. All rights reserved.
 //
+static NSString *const kSiteDeepLink                                   = @"SiteDeepLink";
+static NSString *const kSPAOverrideURL                                 = @"SPAOverrideURL";
 /** The FujifilmSPASDKDelegate protocol defines methods that your delegate object must implement to interact with the Fujifilm SPA SDK interface. The methods of this protocol notify your delegate when the user exits the checkout flow or when an error occurs. See documentation for details on status codes.
  */
 @protocol FujifilmSPASDKDelegate
@@ -51,15 +53,15 @@
  
  - Go to http://www.fujifilmapi.com to register for an apiKey.
  - Ensure you have the right apiKey for the right environment.
- 
- @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
- @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
- @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
- @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
- @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
- @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
- @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
- @param extraOptions: for future use, nil is the only acceptable value currently
+  
+  @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
+  @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
+  @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
+  @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
+  @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
+  @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
+  @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
+  @param extraOptions: for future use, nil is the only acceptable value currently
  */
 
 typedef enum {

@@ -2,7 +2,8 @@
 //  SettingsViewController.h
 //  Fujifilm_SPA_SDK_iOS_DemoApp
 //
-//  Copyright (c) 2016 FUJIFILM North America Corp. All rights reserved.
+//  Created by Sam on 4/1/16.
+//  Copyright © 2016 ___Fujifilm___. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
@@ -11,6 +12,7 @@
 @interface SettingsViewController : UITableViewController<UITextFieldDelegate, UITableViewDelegate>{}
 @property (weak, nonatomic) IBOutlet UISegmentedControl *environmentControl;
 @property (weak, nonatomic) IBOutlet UISwitch *retainUserInfo;
+@property (weak, nonatomic) IBOutlet UISwitch *enableAddMorePhotos;
 @property (weak, nonatomic) IBOutlet UITextField *apiKey;
 @property (weak, nonatomic) IBOutlet UITextField *userID;
 @property (weak, nonatomic) IBOutlet UITextField *url;
@@ -24,7 +26,11 @@
 
 -(NSString *) getUserId;
 
+-(NSString *) getUrl;
+
 -(BOOL) getRetainUserInfo;
+
+-(NSNumber *) getEnableAddMorePhotos;
 
 -(NSString *) getEnvironment;
 
