@@ -65,7 +65,7 @@
          @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
          @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
          @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
-         @param extraOptions: for future use, nil is the only acceptable value currently
+         @param extraOptions: Optional parameter to set extra options. A dictionary containing optional key/value pairs for configuring the SDK. Currently accepted keys are defined in our documentation on GitHub.
          *---------------------------------------------------------------------------------------
          
          Example using public urls
