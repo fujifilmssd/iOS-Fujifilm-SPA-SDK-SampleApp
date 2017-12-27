@@ -22,6 +22,8 @@
 @property (nonatomic) NSString *launchRetailer;
 @property (weak, nonatomic) IBOutlet UITextField *versionNumber;
 
+@property (nonatomic, retain) NSMutableArray<FFLine *> *preRenderedLines;
+
 -(NSString *) getApiKey;
 
 -(NSString *) getUserId;

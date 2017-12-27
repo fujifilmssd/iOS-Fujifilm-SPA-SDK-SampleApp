@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 static NSString *const kSiteDeepLink                                   = @"SiteDeepLink";
 static NSString *const kSPAOverrideURL                                 = @"SPAOverrideURL";
+static NSString *const kPreRenderedOrder                               = @"preRenderedOrder";
 /** The FujifilmSPASDKDelegate protocol defines methods that your delegate object must implement to interact with the Fujifilm SPA SDK interface. The methods of this protocol notify your delegate when the user exits the checkout flow or when an error occurs. See documentation for details on status codes.
  */
 @protocol FujifilmSPASDKDelegate
@@ -55,15 +56,15 @@ static NSString *const kSPAOverrideURL                                 = @"SPAOv
  
  - Go to http://www.fujifilmapi.com to register for an apiKey.
  - Ensure you have the right apiKey for the right environment.
-  
-  @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
-  @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
-  @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
-  @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
-  @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
-  @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
-  @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
-  @param extraOptions: for future use, nil is the only acceptable value currently
+ 
+ @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
+ @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
+ @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
+ @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
+ @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
+ @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
+ @param launchPage(LaunchPage): The page that the SDK should launch when initialized. Valid values are (kHome, kCart), defaults to kHome
+ @param extraOptions: A dictionary with several accepted key/value pairs. All key/value pairs are optional; extraOptions may be empty or nil if no options are desired. See section "Extra Initialization Options" in GitHub documentation for more information.
  */
 
 typedef enum {
@@ -79,3 +80,86 @@ typedef enum {
 
 @end
 
+@class FFOrder, FFLine, FFPage, FFAsset;
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface FFOrder : NSObject
+
+@property (nonatomic, retain, readonly, getter=getOrderLines) NSArray<FFLine *> *lines;
+
++(nullable instancetype)order;
++(nullable instancetype)orderWithLines:(NSArray <FFLine *> *)lines;
+
+-(nullable instancetype)init;
+-(nullable instancetype)initWithLines:(NSArray <FFLine *> *)lines;
+
+-(void)addLine:(FFLine *)line;
+-(void)removeLine:(FFLine *)line;
+
+@end
+
+NS_ASSUME_NONNULL_END
+
+NS_ASSUME_NONNULL_BEGIN
+
+@interface FFLine : NSObject
+
+@property (nonatomic, retain, readonly) NSString *productCode;
+@property (nonatomic, retain, readonly, getter=getPages) NSArray<FFPage *> *pages;
+
++(nullable instancetype)lineWithProductCode:(NSString *)productCode;
++(nullable instancetype)lineWithProductCode:(NSString *)productCode pages:(NSArray<FFPage *> *)pages;
+
+-(nullable instancetype)init NS_UNAVAILABLE;
+-(nullable instancetype)initWithProductCode:(NSString *)productCode;
+-(nullable instancetype)initWithProductCode:(NSString *)productCode pages:(NSArray<FFPage *> *)pages;
+
+-(void)addPage:(FFPage *)page;
+-(void)removePage:(FFPage *)page;
+
+@end
+
+NS_ASSUME_NONNULL_END
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class FFAsset;
+
+@interface FFPage : NSObject
+
+@property (nonatomic, retain, readonly, getter=getPageAssets) NSArray<FFAsset *> *assets;
+
++(nullable instancetype)page;
++(nullable instancetype)pageWithAssets:(NSArray<FFAsset *> *)assets;
+
+-(nullable instancetype)init;
+-(nullable instancetype)initWithAssets:(NSArray<FFAsset *> *)assets;
+
+-(void)addAsset:(FFAsset *)asset;
+-(void)removeAsset:(FFAsset *)asset;
+
+@end
+
+NS_ASSUME_NONNULL_END
+
+NS_ASSUME_NONNULL_BEGIN
+
+typedef NS_ENUM(NSUInteger, FFAssetType) {
+    FFAssetTypeImage = 1,
+    FFAssetTypeText = 2
+};
+
+@interface FFAsset : NSObject
+
+@property (nonatomic, retain, readonly) NSString *hiResImageURL;
+@property (nonatomic, assign, readonly) FFAssetType type;
+
++(nullable instancetype)assetWithHiResImageURL:(NSString *)hiResImageURL;
+
+-(nullable instancetype)init NS_UNAVAILABLE;
+-(nullable instancetype)initWithHiResImageURL:(NSString *)hiResImageURL;
+
+@end
+
+NS_ASSUME_NONNULL_END

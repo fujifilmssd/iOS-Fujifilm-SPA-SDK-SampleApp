@@ -83,6 +83,13 @@
         [extraOptions setValue: [self.settingsViewController getDeepLink] forKey: kSiteDeepLink];
         [extraOptions setValue: [self.settingsViewController getUrl] forKey: kSPAOverrideURL];
         [extraOptions setValue: [self.settingsViewController getEnableAddMorePhotos] forKey:@"enableAddMorePhotos"];
+        
+        
+        if (self.settingsViewController.preRenderedLines.count > 0) {
+            FFOrder *order = [FFOrder orderWithLines:self.settingsViewController.preRenderedLines];
+            [extraOptions setValue:order forKey:kPreRenderedOrder];
+        }
+        
         Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithApiKey: [self.settingsViewController getApiKey]
                                                                                          environment:  [self.settingsViewController getEnvironment]
                                                                                               images: self.imageAssets
@@ -174,32 +181,32 @@
     }
 }
 -(void) openPhotoPickerHelper {
-
-        // init picker
-        QBImagePickerController *picker = [[QBImagePickerController alloc] init];
-        picker.delegate = self;
-        //hide empty albums
-        
-        
-        // assign options
-        picker.allowsMultipleSelection = YES;
-        picker.excludeEmptyAlbums = YES;
-        picker.mediaType = QBImagePickerMediaTypeImage;
-        picker.showsNumberOfSelectedItems = YES;
-        picker.minimumNumberOfSelection = 0;
-        picker.maximumNumberOfSelection = 100;
-        NSMutableArray* selectedIDs = [NSMutableArray new];
-        for (PHAsset* asset in self.imageAssets) {
-            [selectedIDs addObject:asset.localIdentifier];
-        }
-        [picker setSelectedItemsWithIDs:selectedIDs];
-        
-        // to present picker as a form sheet in iPad
-        if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
-            picker.modalPresentationStyle = UIModalPresentationFormSheet;
-        
-        // present picker
-        [self presentViewController:picker animated:YES completion:nil];
+    
+    // init picker
+    QBImagePickerController *picker = [[QBImagePickerController alloc] init];
+    picker.delegate = self;
+    //hide empty albums
+    
+    
+    // assign options
+    picker.allowsMultipleSelection = YES;
+    picker.excludeEmptyAlbums = YES;
+    picker.mediaType = QBImagePickerMediaTypeImage;
+    picker.showsNumberOfSelectedItems = YES;
+    picker.minimumNumberOfSelection = 0;
+    picker.maximumNumberOfSelection = 100;
+    NSMutableArray* selectedIDs = [NSMutableArray new];
+    for (PHAsset* asset in self.imageAssets) {
+        [selectedIDs addObject:asset.localIdentifier];
+    }
+    [picker setSelectedItemsWithIDs:selectedIDs];
+    
+    // to present picker as a form sheet in iPad
+    if (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad)
+        picker.modalPresentationStyle = UIModalPresentationFormSheet;
+    
+    // present picker
+    [self presentViewController:picker animated:YES completion:nil];
     
 }
 -(IBAction) openPhotoPicker {
@@ -237,7 +244,7 @@
     }
 }
 -(void) openCameraHelper {
-     [self displayCameraView];
+    [self displayCameraView];
     AVAuthorizationStatus authStatus = [AVCaptureDevice authorizationStatusForMediaType:AVMediaTypeVideo];
     
     if (authStatus == AVAuthorizationStatusDenied) {
@@ -380,6 +387,9 @@
         case kFujifilmSDKStatusCodeInvalidPromoCodeFormat:
             msg = @"Invalid Promo Code Format";
             break;
+        case kFujifilmSDKStatusCodeRequiresPhotoPermission:
+            msg = @"Photo Permission Required";
+            break;
         default:
             msg = @"Unknown Error";
     }
@@ -499,17 +509,17 @@
                                                                     
                                                                 }];
                     }
-//                    else if([object isKindOfClass:[ALAsset class]]){
-//                        //alasset
-//                        ALAsset *asset = (ALAsset *) object;
-//                        UIImage *img = [UIImage imageWithCGImage: [asset thumbnail]];
-//                        if (img != nil) {
-//                            [tempThumbnails addObject: img];
-//                        } else {
-//                            [invalidImages addObject:object];
-//                        }
-//                        
-//                    }
+                    //                    else if([object isKindOfClass:[ALAsset class]]){
+                    //                        //alasset
+                    //                        ALAsset *asset = (ALAsset *) object;
+                    //                        UIImage *img = [UIImage imageWithCGImage: [asset thumbnail]];
+                    //                        if (img != nil) {
+                    //                            [tempThumbnails addObject: img];
+                    //                        } else {
+                    //                            [invalidImages addObject:object];
+                    //                        }
+                    //
+                    //                    }
                     else if ([object isKindOfClass:[NSString class]]){
                         //image url
                         NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:object]];
