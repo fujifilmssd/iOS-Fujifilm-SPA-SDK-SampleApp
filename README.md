@@ -177,14 +177,13 @@ Finally, present the Fujifilm_SPA_SDK_iOS object:
 [self presentViewController:fujifilmOrderController animated:YES completion:nil];
 ```
 
-
 #### Extra Initialization Options (Optional)
-The following are currently accepted key/value pairs for the `extraOptions` initialization parameter:
-| Key        | Value           | Description  |
-| ------------- |-------------| -----|
-| `kSiteDeepLink`      | `NSString*` | Specifies which page the user is first presented with when launching the SDK. You can send the user to the cart, a category, or to a product details screen. Set the value to `Cart` to send to cart. To send the user to a category use the follow pattern: `mailorder/CATEGORY_NAME`. Make sure to change the `CATEGORY_NAME` to the name of the category, for example, `mailorder/WallArt`. To send the user to a product details screen use the following pattern: `mailorder/CATEGORY_NAME/PRODUCT_NAME`. Make sure to change `CATEGORY_NAME` to the name of the category and the `PRODUCT_NAME` to the name of the product, for example, `mailorder/canvas/11x14gallerywrappedcanvas`. |
-| `kEnableAddMorePhotos`      | `BOOL`      |  By default this is set to `YES`. To disable  the "Add More Photos" feature set this to value `No`. If `YES` (or omitted), the user will be able to add more photos from his or her local Photos gallery on the Compose screen and the Prints screen. |
-| `kPreRenderedOrder`    | `FFOrder*` | See section "[Providing Pre-rendered Products](#providing-pre-rendered-products)" for more information.                                                                                                               |
+| Key | Value | Description |
+| ------- | ----- | --------------- |
+|`kSiteDeepLink`|`NSString*`|Specifies which page the user is first presented with when launching the SDK. You can send the user to the cart, a category, or to a product details screen. To send the user to the cart, set the value to `Cart`. To send the user to a category use the follow pattern: `mailorder/CATEGORY_NAME`. Make sure to change the `CATEGORY_NAME` to the name of the category, for example, `mailorder/WallArt`. To send the user to a product details screen use the following pattern: `mailorder/CATEGORY_NAME/PRODUCT_NAME`. Make sure to change `CATEGORY_NAME` to the name of the category and the `PRODUCT_NAME` to the name of the product, for example, `mailorder/canvas/11x14gallerywrappedcanvas`.    |
+|`kEnableAddMorePhotos`|`BOOL*`|By default this is set to `YES`. To disable  the "Add More Photos" feature set this to value `No`. If `YES` (or omitted), the user will be able to add more photos from his or her local Photos gallery on the Compose screen and the Prints screen.
+|`kPreRenderedOrder`|`FFOrder*`|See section "[Providing Pre-rendered Products](#providing-pre-rendered-products)" for more information.
+
 
 #### Providing Pre-rendered Products (Optional)
 In order to include pre-rendered products with your order, you may pass an instance of the `FFOrder` class into the `extraOptions` parameter. This class contains a list of products (instances of `FFLine` class) to be added to the order. Each `FFLine` contains a product code field which corresponds to the product code found on http://fujifilmapi.com, as well as a list of `FFPage` objects. Each `FFPage` object contains a list of `FFAsset` objects, each of which contains a url to the Hi-Res image to be printed.
