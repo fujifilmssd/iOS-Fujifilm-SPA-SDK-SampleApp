@@ -34,7 +34,7 @@ Include the Fujifilm SPA SDK in your Xcode project. To add Fujifilm SPA SDK to y
 
 #### Using CocoaPods
 
-For more information on Cocoapods, including instructions on adding a pod to your Xcode project, visit https://cocoapods.org/ and navigate to the Guides section.
+For more information on Cocoapods, including instructions on adding a pod to your Xcode project, visit https://guides.cocoapods.org/using/the-podfile.html. 
 
 This section assumes you have CocoaPods installed on your system.
 
