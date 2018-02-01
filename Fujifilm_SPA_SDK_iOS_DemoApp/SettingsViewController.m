@@ -28,7 +28,6 @@ static NSString * const kSPAPrerenderedImageRootPath = @"https://stage.webservic
     [self.tableView setDelegate:self];
     [self.apiKey setDelegate:self];
     [self.userID setDelegate:self];
-    [self.url setDelegate:self];
     [self.promoCode setDelegate:self];
     [self.deepLink setDelegate:self];
     NSString * version = [[NSBundle mainBundle] objectForInfoDictionaryKey: @"CFBundleShortVersionString"];
@@ -54,10 +53,6 @@ static NSString * const kSPAPrerenderedImageRootPath = @"https://stage.webservic
 
 -(NSString *) getUserId {
     return self.userID.text;
-}
-
--(NSString *) getUrl {
-    return self.url.text;
 }
 
 -(BOOL) getRetainUserInfo {

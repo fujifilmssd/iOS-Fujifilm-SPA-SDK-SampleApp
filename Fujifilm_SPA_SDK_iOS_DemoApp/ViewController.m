@@ -81,7 +81,6 @@
         
         NSMutableDictionary<NSString *, id> *extraOptions = [NSMutableDictionary new];
         [extraOptions setValue: [self.settingsViewController getDeepLink] forKey: kSiteDeepLink];
-        [extraOptions setValue: [self.settingsViewController getUrl] forKey: kSPAOverrideURL];
         [extraOptions setValue: [self.settingsViewController getEnableAddMorePhotos] forKey:@"enableAddMorePhotos"];
         
         
@@ -451,7 +450,9 @@
 {
     [imagePickerController dismissViewControllerAnimated:YES completion:nil];
     for (PHAsset* asset in items) {
-        [self.imageAssets addObject:asset];
+        if (![self.imageAssets containsObject:asset]) { //Prevent duplicate images from being added to the Sample App
+            [self.imageAssets addObject:asset];
+        }
     }
     [self setImageViewerImages];
 }
@@ -579,13 +580,4 @@
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
     return [self.thumbnails count];
 }
-//+ (ALAssetsLibrary *)defaultAssetsLibrary {
-//    static dispatch_once_t pred = 0;
-//    static ALAssetsLibrary *library = nil;
-//    dispatch_once(&pred, ^{
-//        library = [[ALAssetsLibrary alloc] init];
-//    });
-//    return library;
-//}
-
 @end

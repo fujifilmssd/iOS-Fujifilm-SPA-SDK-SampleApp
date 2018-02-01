@@ -15,7 +15,6 @@
 @property (weak, nonatomic) IBOutlet UISwitch *enableAddMorePhotos;
 @property (weak, nonatomic) IBOutlet UITextField *apiKey;
 @property (weak, nonatomic) IBOutlet UITextField *userID;
-@property (weak, nonatomic) IBOutlet UITextField *url;
 @property (weak, nonatomic) IBOutlet UITextField *promoCode;
 @property (weak, nonatomic) IBOutlet UITextField *deepLink;
 @property (nonatomic) NSString *launchPage;
@@ -27,8 +26,6 @@
 -(NSString *) getApiKey;
 
 -(NSString *) getUserId;
-
--(NSString *) getUrl;
 
 -(BOOL) getRetainUserInfo;
 
