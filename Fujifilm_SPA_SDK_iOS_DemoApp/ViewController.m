@@ -81,8 +81,7 @@
         
         NSMutableDictionary<NSString *, id> *extraOptions = [NSMutableDictionary new];
         [extraOptions setValue: [self.settingsViewController getDeepLink] forKey: kSiteDeepLink];
-        [extraOptions setValue: [self.settingsViewController getEnableAddMorePhotos] forKey:@"enableAddMorePhotos"];
-        
+        [extraOptions setValue: [self.settingsViewController getEnableAddMorePhotos] forKey:kEnableAddMorePhotos];
         
         if (self.settingsViewController.preRenderedLines.count > 0) {
             FFOrder *order = [FFOrder orderWithLines:self.settingsViewController.preRenderedLines];
@@ -346,7 +345,12 @@
 #pragma mark -
 
 #pragma mark Fujifilm SPA SDK delegate
-
+/**
+ Required delegate
+ Tells the delegate how the user exited the checkout flow.
+ Control is passed back to your application once this delegate method is called.
+ @param statusCode - see documentation for list of status codes.
+ */
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
     NSString *msg;
     /**
@@ -392,23 +396,84 @@
         default:
             msg = @"Unknown Error";
     }
-    
-    if(statusCode != kFujifilmSDKStatusCodeFatal
-       && statusCode!= kFujifilmSDKStatusCodeOrderComplete
-       && statusCode != kFujifilmSDKStatusCodeUserCanceled
-       && statusCode != kFujifilmSDKStatusCodeNoInternet
-       && statusCode !=  kFujifilmSDKStatusCodeTimeout) {
-        UIAlertView *alert = [[UIAlertView alloc] initWithTitle:nil
-                                                        message: msg
-                                                       delegate:nil
-                                              cancelButtonTitle:@"OK"
-                                              otherButtonTitles:nil];
-        
-        [alert show];
-    }
+    //NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
 }
+
+/**
+ Optional function that is called when an invalid promotion code is passed into the SDK
+ @param error - see documentation for list of error codes
+ */
 -(void) promoCodeDidFailValidationWithError:(int)error {
+    NSString *errorReason;
+    switch(error) {
+        case 0:
+            errorReason = @"Promotion Expired";
+            break;
+        case 1:
+            errorReason = @"Promotion Not Activated";
+            break;
+        case 2:
+            errorReason = @"Invalid Discount";
+            break;
+        case 3:
+            errorReason = @"Promotion Disabled";
+            break;
+        case 4:
+            errorReason = @"Promotion Does Not Exist";
+            break;
+        case 5:
+        default:
+            errorReason = @"Fatal Error";
+            break;
+    }
+    //NSLog(@"Promotion is invalid. Cause: %@",errorReason);
 }
+/*
+ Receiving analytic events (Optional)
+ If you're interested in seeing what behavior your users are taking in our SDK, we provide a way for you to listen to events from us when users take certain actions. To receive these events, implement the receivedAnalyticsEvent:withAttributes: delegate method.
+ 
+ The attributes are a NSArray of NSDictionary. In each NSDictionary, the keys (defined in our documentation) will correspond to either an NSString value for strings, or NSNumber value for booleans and numbers.
+ */
+-(void) receivedAnalyticsEvent:(NSString *)event withAttributes:(NSArray *)attributes{
+    if (!event) {
+        return;
+    }
+    if ([event isEqualToString:kAnalyticsEventItemPurchased]) {
+        [self processItemPurchasedEventWithAttributes:attributes];
+    }
+    // Handle any other desired events here
+}
+
+-(void) processItemPurchasedEventWithAttributes:(NSArray *)attributes {
+    NSString *productName = nil;
+    NSString *productCode = nil;
+    NSNumber *quantity = @0;
+    NSNumber *unitPrice = @0.0;
+    
+    for (NSDictionary *attribute in attributes) {
+        NSObject *eventValue = [attribute valueForKey:valueKey];
+        if (eventValue == nil || [eventValue isKindOfClass:[NSNull class]]) {
+            continue;
+        }
+        
+        NSString *attributeName = [attribute valueForKey:attributeKey];
+        if ([attributeName isEqualToString:kAnalyticsAttributePurchasedProduct]) {
+            productName = [attribute valueForKey:valueKey];
+        }
+        else if ([attributeName isEqualToString:kAnalyticsAttributeProductCodePurchased]) {
+            productCode = [attribute valueForKey:valueKey];
+        }
+        else if ([attributeName isEqualToString:kAnalyticsAttributePurchasedQuantity]) {
+            quantity = [attribute valueForKey:valueKey];
+        }
+        else if ([attributeName isEqualToString:kAnalyticsAttributePurchasedUnitPrice]) {
+            unitPrice = [attribute valueForKey:valueKey];
+        }
+    }
+    
+    //NSLog(@"Received purchased event for product %@ (%@) with quantity %@ and unit price %@", productName, productCode, quantity, unitPrice);
+}
+
 
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
