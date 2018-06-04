@@ -663,8 +663,8 @@ Make sure to change the "com.your-company.Your-App.FujifilmSDK.Payments" to matc
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-[Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:@"com.your-company.Your-App.FujifilmSDK.Payments"];
-return YES;
+    [Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:@"com.your-company.Your-App.FujifilmSDK.Payments"];
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
