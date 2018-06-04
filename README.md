@@ -230,39 +230,52 @@ When the Fujifilm SPA SDK is finished, it will return to the parent app, calling
 #pragma mark Fujifilm SPA SDK delegate
 
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
-NSString *msg;
-switch (statusCode){
-case 0:
-msg = @"Fatal Error";
-break;
-case 1:
-msg = @"No Images Uploaded";
-break;
-case 2:
-msg = @"No Internet";
-break;
-case 3:
-msg = @"Invalid APIKey";
-break;
-case 4:
-msg = @"User Canceled";
-break;
-case 5:
-msg = @"No Valid Images";
-break;
-case 6:
-msg = @"Timeout Error";
-break;
-case 7:
-msg = @"Order Complete";
-break;
-case 8:
-msg = @"Upload Failed";
-break;
-default:
-msg = @"Unknown Error";
-}
-NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
+    NSString *msg;
+    /**
+     Status codes that may be sent from Fujifilm SPA SDK. This may require updates if any new codes are added. See documentation for list of status codes.
+     */
+    switch (statusCode){
+        case kFujifilmSDKStatusCodeFatal:
+            msg = @"Fatal Error";
+            break;
+        case kFujifilmSDKStatusCodeNoImagesUploaded:
+            msg = @"No Images Uploaded";
+            break;
+        case kFujifilmSDKStatusCodeNoInternet:
+            msg = @"No Internet";
+            break;
+        case kFujifilmSDKStatusCodeInvalidAPIKey:
+            msg = @"Invalid APIKey";
+            break;
+        case kFujifilmSDKStatusCodeUserCanceled:
+            msg = @"User Canceled";
+            break;
+        case kFujifilmSDKStatusCodeNoValidImages:
+            msg = @"No Valid Images";
+            break;
+        case kFujifilmSDKStatusCodeTimeout:
+            msg = @"Timeout Error";
+            break;
+        case kFujifilmSDKStatusCodeOrderComplete:
+            msg = message;
+            break;
+        case kFujifilmSDKStatusCodeUploadFailed:
+            msg = @"Upload Failed";
+            break;
+        case kFujifilmSDKStatusCodeInvalidUserIDFormat:
+            msg = @"Invalid User ID Format";
+            break;
+        case kFujifilmSDKStatusCodeInvalidPromoCodeFormat:
+            msg = @"Invalid Promo Code Format";
+            break;
+        case kFujifilmSDKStatusCodeRequiresPhotoPermission:
+            msg = @"Photo Permission Required";
+            break;
+        default:
+            msg = @"Unknown Error";
+    }
+    
+    NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
 }
 ```
 The status code will be one of the following values:
@@ -290,29 +303,29 @@ This method is called when a promotion code that is passed in fails validation i
 
 ```objective-c
 -(void) promoCodeDidFailValidationWithError:(int)error {
-NSString *errorReason;
-switch(error) {
-case kFFPromotionErrorExpired:
-errorReason = @"Promotion Expired";
-break;
-case kFFPromotionErrorNotActivated:
-errorReason = @"Promotion Not Activated";
-break;
-case kFFPromotionErrorInvalidDiscount:
-errorReason = @"Invalid Discount";
-break;
-case kFFPromotionErrorDisabled:
-errorReason = @"Promotion Disabled";
-break;
-case kFFPromotionErrorDoesNotExist:
-errorReason = @"Promotion Does Not Exist";
-break;
-case kFFPromotionErrorFatal:
-default:
-errorReason = @"Fatal Error";
-break;
-}
-NSLog(@”Promotion is invalid. Cause: %@”,errorReason);
+    NSString *errorReason;
+    switch(error) {
+        case 0:
+            errorReason = @"Promotion Expired";
+            break;
+        case 1:
+            errorReason = @"Promotion Not Activated";
+            break;
+        case 2:
+            errorReason = @"Invalid Discount";
+            break;
+        case 3:
+            errorReason = @"Promotion Disabled";
+            break;
+        case 4:
+            errorReason = @"Promotion Does Not Exist";
+            break;
+        case 5:
+        default:
+            errorReason = @"Fatal Error";
+            break;
+    }
+    NSLog(@"Promotion is invalid. Cause: %@",errorReason);
 }
 ```
 
@@ -330,8 +343,8 @@ For example:
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-[Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:@"com.your-company.Your-App.FujifilmSDK.Payments"];
-return YES;
+    [Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:@"com.your-company.Your-App.FujifilmSDK.Payments"];
+    return YES;
 }
 ```
 
@@ -342,10 +355,10 @@ Then in your application delegate, pass the payment URL that you set above in [S
 - (BOOL)application:(UIApplication *)application
 openURL:(NSURL *)url
 options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
-return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url options:options];
-}
-return NO;
+  if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
+    return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url options:options];
+  }
+  return NO;
 }
 #endif
 
@@ -354,10 +367,10 @@ return NO;
 openURL:(NSURL *)url
 sourceApplication:(NSString *)sourceApplication
 annotation:(id)annotation {
-if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
-return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url sourceApplication:sourceApplication];
-}
-return NO;
+  if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
+    return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url sourceApplication:sourceApplication];
+  }
+  return NO;
 }
 ```
 
@@ -370,43 +383,43 @@ The attributes are a `NSArray` of `NSDictionary`. In each `NSDictionary`, the ke
 
 ```objective-c
 -(void) receivedAnalyticsEvent:(NSString *)event withAttributes:(NSArray *)attributes{
-if (!event) {
-return;
-}
-if ([event isEqualToString:kAnalyticsEventItemPurchased]) {
-[self processItemPurchasedEventWithAttributes:attributes];
-}
-// Handle any other desired events here
+    if (!event) {
+        return;
+    }
+    if ([event isEqualToString:kAnalyticsEventItemPurchased]) {
+        [self processItemPurchasedEventWithAttributes:attributes];
+    }
+    // Handle any other desired events here
 }
 
 -(void) processItemPurchasedEventWithAttributes:(NSArray *)attributes {
-NSString *productName = nil;
-NSString *productCode = nil;
-NSNumber *quantity = @0;
-NSNumber *unitPrice = @0.0;
-
-for (NSDictionary *attribute in attributes) {
-NSObject *eventValue = [attribute valueForKey:valueKey];
-if (eventValue == nil || [eventValue isKindOfClass:[NSNull class]]) {
-continue;
-}
-
-NSString *attributeName = [attribute valueForKey:attributeKey];
-if ([attributeName isEqualToString:kAnalyticsAttributePurchasedProduct]) {
-productName = [attribute valueForKey:valueKey];
-}
-else if ([attributeName isEqualToString:kAnalyticsAttributeProductCodePurchased]) {
-productCode = [attribute valueForKey:valueKey];
-}
-else if ([attributeName isEqualToString:kAnalyticsAttributePurchasedQuantity]) {
-quantity = [attribute valueForKey:valueKey];
-}
-else if ([attributeName isEqualToString:kAnalyticsAttributePurchasedUnitPrice]) {
-unitPrice = [attribute valueForKey:valueKey];
-}
-}
-
-NSLog(@"Received purchased event for product %@ (%@) with quantity %@ and unit price %@", productName, productCode, quantity, unitPrice);
+    NSString *productName = nil;
+    NSString *productCode = nil;
+    NSNumber *quantity = @0;
+    NSNumber *unitPrice = @0.0;
+    
+    for (NSDictionary *attribute in attributes) {
+        NSObject *eventValue = [attribute valueForKey:valueKey];
+        if (eventValue == nil || [eventValue isKindOfClass:[NSNull class]]) {
+            continue;
+        }
+        
+        NSString *attributeName = [attribute valueForKey:attributeKey];
+        if ([attributeName isEqualToString:kAnalyticsAttributePurchasedProduct]) {
+            productName = [attribute valueForKey:valueKey];
+        }
+        else if ([attributeName isEqualToString:kAnalyticsAttributeProductCodePurchased]) {
+            productCode = [attribute valueForKey:valueKey];
+        }
+        else if ([attributeName isEqualToString:kAnalyticsAttributePurchasedQuantity]) {
+            quantity = [attribute valueForKey:valueKey];
+        }
+        else if ([attributeName isEqualToString:kAnalyticsAttributePurchasedUnitPrice]) {
+            unitPrice = [attribute valueForKey:valueKey];
+        }
+    }
+    
+    NSLog(@"Received purchased event for product %@ (%@) with quantity %@ and unit price %@", productName, productCode, quantity, unitPrice);
 }
 ```
 
@@ -561,77 +574,83 @@ pod 'Fujifilm-SPA-SDK', '~> 1.7.6'
 
 ```objective-c
 - (IBAction)launchFujifilmSDK:(id)sender {
-NSArray *images = [[NSArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
+    NSArray *images = [[NSArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
 
-/*
--------------------------------------------------------------------------------
-Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.
--------------------------------------------------------------------------------
+    /*
+    -------------------------------------------------------------------------------
+    Create a Fujifilm_SPA_SDK_iOS instance and present the Fujifilm SDK controller.
+    -------------------------------------------------------------------------------
 
-- Go to http://www.fujifilmapi.com to register for an apiKey.
-- Ensure you have the right apiKey for the right environment.
-//MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
-*/
-Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
-initWithApiKey: @"5cb79d2191874aca879e2c9ed7d5747c"
-environment:  @"Preview"
-images: images
-userID: @"" //optional
-retainUserInfo: YES
-promoCode: @"" //optional
-launchPage: kHome
-extraOptions: nil];
+    - Go to http://www.fujifilmapi.com to register for an apiKey.
+    - Ensure you have the right apiKey for the right environment.
+    //MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
+    */
+    Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
+    initWithApiKey: @"5cb79d2191874aca879e2c9ed7d5747c"
+    environment:  @"Preview"
+    images: images
+    userID: @"" //optional
+    retainUserInfo: YES
+    promoCode: @"" //optional
+    launchPage: kHome
+    extraOptions: nil];
 
-fujifilmOrderController.delegate = self;
-//Create a new FujifilmSPASDKNavigation Controller with the orderController as its root
-FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
-/*
----------------------------------------------------------------------------------------
-Present the Fujifilm SPA SDK Navigation Controller
----------------------------------------------------------------------------------------
-*/
-[self presentViewController:navController animated:YES completion:nil];
+    fujifilmOrderController.delegate = self;
+    //Create a new FujifilmSPASDKNavigation Controller with the orderController as its root
+    FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
+    /*
+    ---------------------------------------------------------------------------------------
+    Present the Fujifilm SPA SDK Navigation Controller
+    ---------------------------------------------------------------------------------------
+    */
+    [self presentViewController:navController animated:YES completion:nil];
 }
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
-NSString *msg;
-switch (statusCode){
-case 0:
-msg = @"Fatal Error";
-break;
-case 1:
-msg = @"No Images Uploaded";
-break;
-case 2:
-msg = @"No Internet";
-break;
-case 3:
-msg = @"Invalid APIKey";
-//REMOVE THIS ALERT WHEN RELEASING
-[[[UIAlertView alloc] initWithTitle:@"Invalid apiKey!"
-message:@""
-delegate:nil
-cancelButtonTitle:@"OK"
-otherButtonTitles:nil] show];
-break;
-case 4:
-msg = @"User Canceled";
-break;
-case 5:
-msg = @"No Valid Images";
-break;
-case 6:
-msg = @"Timeout Error";
-break;
-case 7:
-msg = @"Order Complete";
-break;
-case 8:
-msg = @"Upload Failed";
-break;
-default:
-msg = @"Unknown Error";
-}
-NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
+    NSString *msg;
+    /**
+     Status codes that may be sent from Fujifilm SPA SDK. This may require updates if any new codes are added. See documentation for list of status codes.
+     */
+    switch (statusCode){
+        case kFujifilmSDKStatusCodeFatal:
+            msg = @"Fatal Error";
+            break;
+        case kFujifilmSDKStatusCodeNoImagesUploaded:
+            msg = @"No Images Uploaded";
+            break;
+        case kFujifilmSDKStatusCodeNoInternet:
+            msg = @"No Internet";
+            break;
+        case kFujifilmSDKStatusCodeInvalidAPIKey:
+            msg = @"Invalid APIKey";
+            break;
+        case kFujifilmSDKStatusCodeUserCanceled:
+            msg = @"User Canceled";
+            break;
+        case kFujifilmSDKStatusCodeNoValidImages:
+            msg = @"No Valid Images";
+            break;
+        case kFujifilmSDKStatusCodeTimeout:
+            msg = @"Timeout Error";
+            break;
+        case kFujifilmSDKStatusCodeOrderComplete:
+            msg = message;
+            break;
+        case kFujifilmSDKStatusCodeUploadFailed:
+            msg = @"Upload Failed";
+            break;
+        case kFujifilmSDKStatusCodeInvalidUserIDFormat:
+            msg = @"Invalid User ID Format";
+            break;
+        case kFujifilmSDKStatusCodeInvalidPromoCodeFormat:
+            msg = @"Invalid Promo Code Format";
+            break;
+        case kFujifilmSDKStatusCodeRequiresPhotoPermission:
+            msg = @"Photo Permission Required";
+            break;
+        default:
+            msg = @"Unknown Error";
+    }
+    //NSLog(@"fujifilmSPASDKFinishedWithStatus: statusCode: %u message: %@", statusCode, msg);
 }
 ```
 ##### AppDelegate.m
@@ -667,11 +686,11 @@ return YES;
 - (BOOL)application:(UIApplication *)application
 openURL:(NSURL *)url
 options:(NSDictionary<UIApplicationOpenURLOptionsKey,id> *)options {
-if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
-return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url options:options];
-}
-return NO;
-}
+    if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
+      return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url options:options];
+    }
+      return NO;
+    }
 #endif
 
 // If you support iOS 8, add the following method.
@@ -679,11 +698,11 @@ return NO;
 openURL:(NSURL *)url
 sourceApplication:(NSString *)sourceApplication
 annotation:(id)annotation {
-if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
-return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url sourceApplication:sourceApplication];
-}
-return NO;
-}
+    if ([url.scheme localizedCaseInsensitiveCompare:@"com.your-company.Your-App.FujifilmSDK.Payments"] == NSOrderedSame) {
+      return [Fujifilm_SPA_SDK_iOS_AppSwitch handleOpenURL:url sourceApplication:sourceApplication];
+    }
+    return NO;
+    }
 @end
 ```
 ## Additional notes and debugging help
