@@ -49,7 +49,7 @@ Upon successful installation, close your Xcode project if it is open, and open t
 #### Manual Installation
 ##### Skip this section if you are using CocoaPods!
 1. Download files
-* Download the [libFujifilm_SPA_SDK_iOS.a](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a),  [Fujifilm.SPA.SDK.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h), and [Fujifilm_SPA_SDK_iOS_AppSwitch.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h).
+* Download the [libFujifilm_SPA_SDK_iOS.a](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a),  [Fujifilm.SPA.SDK.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h), and [Fujifilm_SPA_SDK_iOS_AppSwitch.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm_SPA_SDK_iOS_AppSwitch.h).
 2. Add files to project
 * Open your project in Xcode. Select File > Add Files To “MyApp” and select the files you just downloaded. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
 3. Link with frameworks
@@ -66,7 +66,7 @@ Upon successful installation, close your Xcode project if it is open, and open t
 - ImageIO
 - Photos
 * To add frameworks, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
-4. In your `TARGETS` Build settings, add `-lc++` to the `Other Linker Flags` section
+4. In your `TARGETS` Build settings, add `-lc++` and `-ObjC` to the `Other Linker Flags` section
 
 ### Step 3: Updating info.plist file
 In order to use the SDK you will need to add keys to your project's `info.plist` file.
