@@ -569,6 +569,23 @@ pod 'Fujifilm-SPA-SDK', '~> 1.7.28'
 
 @interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
 
+/**
+ Enum of status codes that may be sent from Fujifilm SPA SDK. This may require updates if any new codes are added. See documentation for list of status codes.
+ */
+typedef enum FujifilmSDKStatusCode {
+    kFujifilmSDKStatusCodeFatal= 0,
+    kFujifilmSDKStatusCodeNoImagesUploaded= 1,
+    kFujifilmSDKStatusCodeNoInternet= 2,
+    kFujifilmSDKStatusCodeInvalidAPIKey= 3,
+    kFujifilmSDKStatusCodeUserCanceled= 4,
+    kFujifilmSDKStatusCodeNoValidImages= 5,
+    kFujifilmSDKStatusCodeTimeout= 6,
+    kFujifilmSDKStatusCodeOrderComplete= 7,
+    kFujifilmSDKStatusCodeUploadFailed= 8,
+    kFujifilmSDKStatusCodeInvalidUserIDFormat = 9,
+    kFujifilmSDKStatusCodeInvalidPromoCodeFormat = 10,
+    kFujifilmSDKStatusCodeRequiresPhotoPermission= 11
+} FujifilmSDKStatusCode;
 @end
 ```
 ##### ViewController.m
