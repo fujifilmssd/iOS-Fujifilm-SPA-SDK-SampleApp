@@ -8,6 +8,16 @@
 
 /* Begin PBXBuildFile section */
 		2289DD311CB401AF00F58D8E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2289DD301CB401AF00F58D8E /* SettingsViewController.m */; };
+		292BACC52190D49700ADB3B5 /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A551F9D016400D93C37 /* QBVideoIconView.m */; };
+		292BACC62190D49700ADB3B5 /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A561F9D016400D93C37 /* QBVideoIndicatorView.m */; };
+		292BACC72190D49700ADB3B5 /* QBItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A581F9D016400D93C37 /* QBItemCell.m */; };
+		292BACC82190D49700ADB3B5 /* QBAlbumCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A5B1F9D016400D93C37 /* QBAlbumCell.m */; };
+		292BACC92190D49700ADB3B5 /* QBAlbumsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A5D1F9D016400D93C37 /* QBAlbumsViewController.m */; };
+		292BACCA2190D49700ADB3B5 /* QBAssetsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A5F1F9D016400D93C37 /* QBAssetsViewController.m */; };
+		292BACCB2190D49700ADB3B5 /* QBImagePickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A601F9D016400D93C37 /* QBImagePickerController.m */; };
+		292BACCC2190D49700ADB3B5 /* QBItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A611F9D016400D93C37 /* QBItemViewController.m */; };
+		292BACCD2190D49700ADB3B5 /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A631F9D016400D93C37 /* QBCheckmarkView.m */; };
+		292BACCE2190D49700ADB3B5 /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A661F9D016400D93C37 /* QBSlomoIconView.m */; };
 		298E902C1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 298E902B1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a */; };
 		29F5EB021C4BEEC800067F84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5EB011C4BEEC800067F84 /* main.m */; };
 		29F5EB051C4BEEC800067F84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5EB041C4BEEC800067F84 /* AppDelegate.m */; };
@@ -434,9 +444,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				292BACCA2190D49700ADB3B5 /* QBAssetsViewController.m in Sources */,
+				292BACCB2190D49700ADB3B5 /* QBImagePickerController.m in Sources */,
 				29F5EB081C4BEEC800067F84 /* ViewController.m in Sources */,
+				292BACC72190D49700ADB3B5 /* QBItemCell.m in Sources */,
+				292BACC62190D49700ADB3B5 /* QBVideoIndicatorView.m in Sources */,
+				292BACCD2190D49700ADB3B5 /* QBCheckmarkView.m in Sources */,
 				29F5EB051C4BEEC800067F84 /* AppDelegate.m in Sources */,
+				292BACC92190D49700ADB3B5 /* QBAlbumsViewController.m in Sources */,
+				292BACC82190D49700ADB3B5 /* QBAlbumCell.m in Sources */,
+				292BACC52190D49700ADB3B5 /* QBVideoIconView.m in Sources */,
 				29F5EB021C4BEEC800067F84 /* main.m in Sources */,
+				292BACCE2190D49700ADB3B5 /* QBSlomoIconView.m in Sources */,
+				292BACCC2190D49700ADB3B5 /* QBItemViewController.m in Sources */,
 				2289DD311CB401AF00F58D8E /* SettingsViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
