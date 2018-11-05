@@ -40,7 +40,7 @@ This section assumes you have CocoaPods installed on your system.
 
 In your Podfile, include the SPA SDK pod like so:
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.7.6'
+pod 'Fujifilm-SPA-SDK', '~> 1.7.28'
 ```
 Install the pod by running navigating to the project directory in a terminal and running `$ pod install`. If you have already installed the SDK and would like to update to the latest version, run `$ pod update` instead.
 
@@ -49,7 +49,7 @@ Upon successful installation, close your Xcode project if it is open, and open t
 #### Manual Installation
 ##### Skip this section if you are using CocoaPods!
 1. Download files
-* Download the [libFujifilm_SPA_SDK_iOS.a](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a),  [Fujifilm.SPA.SDK.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h), and [Fujifilm_SPA_SDK_iOS_AppSwitch.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h).
+* Download the [libFujifilm_SPA_SDK_iOS.a](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/libFujifilm_SPA_SDK_iOS.a),  [Fujifilm.SPA.SDK.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm.SPA.SDK.h), and [Fujifilm_SPA_SDK_iOS_AppSwitch.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/Fujifilm_SPA_SDK_iOS_DemoApp/Fujifilm_SPA_SDK_iOS_AppSwitch.h).
 2. Add files to project
 * Open your project in Xcode. Select File > Add Files To “MyApp” and select the files you just downloaded. Check “Copy items if needed” under Destination and select “Create groups” under Added Folders. Make sure your target is checked in the “Add to targets” section. Click Add.
 3. Link with frameworks
@@ -67,6 +67,7 @@ Upon successful installation, close your Xcode project if it is open, and open t
 - Photos
 * To add frameworks, select your project in the Xcode file explorer. In the main window, the top left corner has a dropdown menu with a list of your projects and targets. Make sure your target is selected (not your project) and switch to the Build Phases tab. Expand the Link Binary With Libraries section and add the frameworks listed above.
 4. In your `TARGETS` Build settings, add `-lc++` to the `Other Linker Flags` section
+5. In your `TARGETS` Build settings, add `-ObjC` to the `Other Linker Flags` section
 
 ### Step 3: Updating info.plist file
 In order to use the SDK you will need to add keys to your project's `info.plist` file.
@@ -558,7 +559,7 @@ Not event attributes
 ##### Podfile
 
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.7.6'
+pod 'Fujifilm-SPA-SDK', '~> 1.7.28'
 ```
 
 ##### ViewController.h
@@ -568,6 +569,23 @@ pod 'Fujifilm-SPA-SDK', '~> 1.7.6'
 
 @interface ViewController : UIViewController <FujifilmSPASDKDelegate>{}
 
+/**
+ Enum of status codes that may be sent from Fujifilm SPA SDK. This may require updates if any new codes are added. See documentation for list of status codes.
+ */
+typedef enum FujifilmSDKStatusCode {
+    kFujifilmSDKStatusCodeFatal= 0,
+    kFujifilmSDKStatusCodeNoImagesUploaded= 1,
+    kFujifilmSDKStatusCodeNoInternet= 2,
+    kFujifilmSDKStatusCodeInvalidAPIKey= 3,
+    kFujifilmSDKStatusCodeUserCanceled= 4,
+    kFujifilmSDKStatusCodeNoValidImages= 5,
+    kFujifilmSDKStatusCodeTimeout= 6,
+    kFujifilmSDKStatusCodeOrderComplete= 7,
+    kFujifilmSDKStatusCodeUploadFailed= 8,
+    kFujifilmSDKStatusCodeInvalidUserIDFormat = 9,
+    kFujifilmSDKStatusCodeInvalidPromoCodeFormat = 10,
+    kFujifilmSDKStatusCodeRequiresPhotoPermission= 11
+} FujifilmSDKStatusCode;
 @end
 ```
 ##### ViewController.m
@@ -663,8 +681,8 @@ Make sure to change the "com.your-company.Your-App.FujifilmSDK.Payments" to matc
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
-[Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:@"com.your-company.Your-App.FujifilmSDK.Payments"];
-return YES;
+    [Fujifilm_SPA_SDK_iOS_AppSwitch setReturnURLScheme:@"com.your-company.Your-App.FujifilmSDK.Payments"];
+    return YES;
 }
 
 - (void)applicationWillResignActive:(UIApplication *)application {
