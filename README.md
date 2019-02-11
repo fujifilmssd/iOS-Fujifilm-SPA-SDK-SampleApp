@@ -173,9 +173,15 @@ Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
 ```objective-c
 fujifilmOrderController.delegate = self;
 ```
+
+Next, create a new FujifilmSPASDKNavigation Controller with the orderController as its root
+```objective-c
+FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
+```
+
 Finally, present the Fujifilm_SPA_SDK_iOS object:
 ```objective-c
-[self presentViewController:fujifilmOrderController animated:YES completion:nil];
+[self presentViewController:navController animated:YES completion:nil];
 ```
 
 #### Extra Initialization Options (Optional)
@@ -294,6 +300,8 @@ The status code will be one of the following values:
 |8   |     Upload Failed       |
 |9   |  User ID Invalid Format|
 |10   |  Promo Code Invalid Format|
+|11   |  Requires Photo Permission|
+|12   |  Partner Closed SDK|
 
 It is up to your view controller to handle any/all of these cases in `fujifilmSPASDKFinishedWithStatus:andMessage` as seen above. The status codes and messages are for internal use only; please do not present these to the user.
 
