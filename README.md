@@ -12,14 +12,6 @@ The Fujifilm SPA SDK gives you access to over 100 popular photo gift products an
 
 Please visit the Fujifilm Developer Network portal to sign-up and obtain an API key, set product pricing, and configure your application.  The portal is available at http://www.fujifilmapi.com/.
 
-### What’s new?
-There are many new items in this release:
-+ Completely re-designed GUI
-+ Product categorization to help organize the available product set
-+ Over 30 new products including items within popular categories such as Home Décor, Photobooks, Greeting Cards and Mobile Device Cases
-+ A native Android SDK in addition to our iOS SDK so that you can provide your users with a common experience in either operating system (Android versions 4.4 and above)
-+ Updated support for iOS versions 8 and above
-
 ## Requirements
 + iOS version 8.0 or later
 + Developers using the Fujifilm SPA iOS SDK need to sign up for an account on Fujifilm Developer Network (http://fujifilmapi.com), create an application, obtain an Api Key, and setup catalog products and pricing.
@@ -40,7 +32,7 @@ This section assumes you have CocoaPods installed on your system.
 
 In your Podfile, include the SPA SDK pod like so:
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.7.28'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.8'
 ```
 Install the pod by running navigating to the project directory in a terminal and running `$ pod install`. If you have already installed the SDK and would like to update to the latest version, run `$ pod update` instead.
 
@@ -567,7 +559,7 @@ Not event attributes
 ##### Podfile
 
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.7.28'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.8'
 ```
 
 ##### ViewController.h
