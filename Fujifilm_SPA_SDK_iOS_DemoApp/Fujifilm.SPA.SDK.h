@@ -1,11 +1,17 @@
 //
 //  Fujifilm.SPA.SDK.h
 //
-//  Created by Jonathan Nick on 1/7/16.
+//  Created by Jonathan Nick
 //  Copyright (c) 2016 FUJIFILM North America Corp. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import <Photos/Photos.h>
+
+
+NS_ASSUME_NONNULL_BEGIN
+
+@class FFImage;
 
 //Events
 static NSString *const kAnalyticsEventExit                             = @"exit";
@@ -124,6 +130,15 @@ static NSString *const kPreRenderedOrder                               = @"preRe
 -(void) receivedAnalyticsEvent:(NSString *)event withAttributes:(NSArray *)attributes;
 
 -(NSString *) determineExitMethod: (int) statusCode;
+
+/**
+ Optional function (requestForAdditionalImages) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
+ 
+ @param selectedImages - An array of FFImage objects that represents the images the user has in session. This should be referenced in your image picker to display to the user which images are already in their session (show the image as selected). The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and display to the user the images already in their session.
+ @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
+ */
+-(void) requestForAdditionalImages:(NSArray<FFImage *>*)selectedImages lockedImages:(NSArray<FFImage *>*)notDeselectable;
+
 @end
 
 
@@ -144,21 +159,17 @@ static NSString *const kPreRenderedOrder                               = @"preRe
  @note This property must be set and should not be _nil_. You must provide a delegate that conforms to the FujifilmSPASDKDelegate protocol.
  */
 @property (assign) id <FujifilmSPASDKDelegate> delegate;
-/**---------------------------------------------------------------------------------------
- * @name Initializers
- *  ---------------------------------------------------------------------------------------
- */
 
-/** Creates a Fujifilm_SPA_SDK_iOS instance that handles all order checkout process.
+/** initWithApiKey creates a Fujifilm_SPA_SDK_iOS instance that handles all order checkout process.
  
- *Note* : apiKey, environment, and images are required. userid is an optional parameter.
+ *Note* : apiKey and environment are required.
  
  - Go to http://www.fujifilmapi.com to register for an apiKey.
  - Ensure you have the right apiKey for the right environment.
  
  @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
  @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
- @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
+ @param images(FFImage): An NSArray of FFImage which can be initialized with a PHAsset or NSURL. Images must be jpeg, png, or heic format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
  @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
  @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
  @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
@@ -173,6 +184,13 @@ typedef enum {
 
 - (id)initWithApiKey:(NSString *)apiKey environment:(NSString*)environment images:(NSArray *)images userID:(NSString*)userid retainUserInfo:(BOOL)retainUserInfo promoCode:(NSString *)promoCode launchPage:(LaunchPage)initialPage extraOptions:(NSDictionary<NSString *, id>*)extraOptions;
 
+
+/**
+ Optional method for you to call if you implemented the requestForAdditionalImages to show your own image picker.
+ @param selectedImages - An array of FFImage objects that the user selected
+ */
+- (void)responseForAdditionalImages:(NSArray<FFImage *>*) selectedImages;
+
 @end
 
 @interface FujifilmSPASDKNavigationController : UINavigationController
@@ -180,8 +198,6 @@ typedef enum {
 @end
 
 @class FFOrder, FFLine, FFPage, FFAsset;
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface FFOrder : NSObject
 
@@ -197,10 +213,6 @@ NS_ASSUME_NONNULL_BEGIN
 -(void)removeLine:(FFLine *)line;
 
 @end
-
-NS_ASSUME_NONNULL_END
-
-NS_ASSUME_NONNULL_BEGIN
 
 @interface FFLine : NSObject
 
@@ -219,10 +231,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
-
-NS_ASSUME_NONNULL_BEGIN
-
 @class FFAsset;
 
 @interface FFPage : NSObject
@@ -240,10 +248,6 @@ NS_ASSUME_NONNULL_BEGIN
 
 @end
 
-NS_ASSUME_NONNULL_END
-
-NS_ASSUME_NONNULL_BEGIN
-
 typedef NS_ENUM(NSUInteger, FFAssetType) {
     FFAssetTypeImage = 1,
     FFAssetTypeText = 2
@@ -259,6 +263,30 @@ typedef NS_ENUM(NSUInteger, FFAssetType) {
 -(nullable instancetype)init NS_UNAVAILABLE;
 -(nullable instancetype)initWithHiResImageURL:(NSString *)hiResImageURL;
 
+@end
+
+@interface FFBrandingInfo : NSObject
+
+@property (nonatomic, retain) UIColor *primaryTextColor;
+@property (nonatomic, retain) UIColor *pressedTextColor;
+@property (nonatomic, retain) UIColor *primaryBackgroundColor;
+@property (nonatomic, retain) UIColor *pressedBackgroundColor;
+
++(nullable instancetype)brandingWithPrimaryTextColor:(UIColor*)primaryTextColor pressedTextColor:(UIColor*)pressedTextColor primaryBackgroundColor:(UIColor*)primaryBackgroundColor pressedBackgroundColor:(UIColor*)pressedBackgroundColor;
+-(nullable instancetype)init NS_UNAVAILABLE;
+
+@end
+
+@interface FFImage: NSObject
+- (instancetype) initWithPHAsset: (PHAsset *) phAsset;
+- (instancetype) initWithNSURL: (NSURL *) url;
+- (instancetype) initWithLocalPath: (NSURL *)url;
+
+
+/**
+ Gets the unique identifier for an FFImage which is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier
+ */
+- (NSString *)getUniqueIdentifier;
 @end
 
 NS_ASSUME_NONNULL_END

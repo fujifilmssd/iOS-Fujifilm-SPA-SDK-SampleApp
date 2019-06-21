@@ -9,10 +9,13 @@
 #import <AVFoundation/AVFoundation.h>
 
 @interface ViewController ()
-//@property (weak, nonatomic) IBOutlet UISegmentedControl *environmentControl;
+
+@property (nonatomic, retain) Fujifilm_SPA_SDK_iOS *fujifilmSDKOrderController;
+@property (nonatomic, retain) FujifilmSPASDKNavigationController *fujifilmSDKNavigationController;
+
+
 @property (weak, nonatomic) IBOutlet UIView *tableView;
 @property (weak, nonatomic) IBOutlet UICollectionView *imageCarousel;
-//@property (weak, nonatomic) IBOutlet UIView *imageCarouselView;
 @property (strong, nonatomic) UIActionSheet *attachmentMenuSheet;
 @property (strong, nonatomic) UIImagePickerController *cameraPicker;
 @property(nonatomic, strong) NSMutableArray *imageAssets;
@@ -27,6 +30,8 @@
 @synthesize attachmentMenuSheet;
 @synthesize cameraPicker;
 @synthesize carouselWidth;
+@synthesize fujifilmSDKOrderController;
+@synthesize fujifilmSDKNavigationController;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -60,7 +65,7 @@
          
          @param apiKey(NSString): Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific
          @param environment(NSString): Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
-         @param images(id): An NSArray of PHAsset, ALAsset, or NSString (public image urls https://). (Array can contain combination of types). Images must be jpeg/png format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
+         @param images(FFImage): An NSArray of FFImage which can be initialized with a PHAsset or NSURL. Images must be jpeg, png, or heic format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
          @param userID(NSString): Optional param, send in @"" if you don't use it. This can be used to link a user with an order. MaxLength = 50 alphanumeric characters.
          @param retainUserInfo(BOOL):  Save user information (address, phone number, email) for when the app is used a 2nd time.
          @param promoCode(NSString): Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
@@ -68,10 +73,6 @@
          @param extraOptions: Optional parameter to set extra options. A dictionary containing optional key/value pairs for configuring the SDK. Currently accepted keys are defined in our documentation on GitHub.
          *---------------------------------------------------------------------------------------
          
-         Example using public urls
-         self.imageAssets =  [[NSMutableArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
-         
-
          
          */
         LaunchPage page = kHome;
@@ -87,25 +88,26 @@
             FFOrder *order = [FFOrder orderWithLines:self.settingsViewController.preRenderedLines];
             [extraOptions setValue:order forKey:kPreRenderedOrder];
         }
+
         
-        Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithApiKey: [self.settingsViewController getApiKey]
+        fujifilmSDKOrderController = [[Fujifilm_SPA_SDK_iOS alloc] initWithApiKey: [self.settingsViewController getApiKey]
                                                                                          environment:  [self.settingsViewController getEnvironment]
-                                                                                              images: self.imageAssets
+                                                                                              images: [self getImagesForSDK]
                                                                                               userID: [self.settingsViewController getUserId]
                                                                                       retainUserInfo: [self.settingsViewController getRetainUserInfo]
                                                                                            promoCode: [self.settingsViewController getPromoCode]
                                                                                           launchPage: page
                                                                                         extraOptions: extraOptions];
-        fujifilmOrderController.delegate = self;
+        fujifilmSDKOrderController.delegate = self;
         
-        FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
+        fujifilmSDKNavigationController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmSDKOrderController];
         
         /*
          ---------------------------------------------------------------------------------------
          Present the Fujifilm SPA SDK
          ---------------------------------------------------------------------------------------
          */
-        [self presentViewController:navController animated:YES completion:nil];
+        [self presentViewController:fujifilmSDKNavigationController animated:YES completion:nil];
     }
     else if ([self.settingsViewController getApiKey].length == 0) {
         UIAlertView *message = [[UIAlertView alloc] initWithTitle:@"Please enter an apiKey!"
@@ -125,6 +127,38 @@
         
         [message show];
     }
+}
+
+-(NSArray<FFImage *>*)getImagesForSDK{
+    /*
+     Example using public urls
+     FFImage *newFFImage1 = [[FFImage alloc] initWithNSURL:[NSURL URLWithString:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg"]];
+     FFImage *newFFImage2 = [[FFImage alloc] initWithNSURL:[NSURL URLWithString:@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg"]];
+     
+     NSMutableArray<FFImage *> *ffimages =  [[NSMutableArray alloc] initWithObjects:newFFImage1,newFFImage2, nil];
+     */
+
+    NSMutableArray<FFImage *> *ffimages = [[NSMutableArray alloc] init];
+    @synchronized(self.imageAssets) {
+        for(id object in self.imageAssets){
+            @autoreleasepool {
+                if([object isKindOfClass:[PHAsset class]]) {
+                    FFImage *newFFImage = [[FFImage alloc] initWithPHAsset:object];
+                    [ffimages addObject:newFFImage];
+                }
+                else if ([object isKindOfClass:[NSString class]]){
+                    //image url
+                    FFImage *newFFImage = [[FFImage alloc] initWithNSURL:[NSURL URLWithString:object]];
+                    [ffimages addObject:newFFImage];
+                }
+            }
+        }
+    }
+    if(ffimages.count > 0)
+    {
+        return ffimages;
+    }
+    return nil;
 }
 - (IBAction)pickImageTapped:(id)sender {
     if(NSFoundationVersionNumber < NSFoundationVersionNumber_iOS_8_0){
@@ -194,8 +228,14 @@
     picker.minimumNumberOfSelection = 0;
     picker.maximumNumberOfSelection = 100;
     NSMutableArray* selectedIDs = [NSMutableArray new];
-    for (PHAsset* asset in self.imageAssets) {
-        [selectedIDs addObject:asset.localIdentifier];
+    
+    @synchronized(self.imageAssets) {
+        for (id asset in self.imageAssets) {
+            if([asset isKindOfClass:[PHAsset class]]) {
+                 [selectedIDs addObject:((PHAsset *)asset).localIdentifier];
+            }
+           
+        }
     }
     [picker setSelectedItemsWithIDs:selectedIDs];
     
@@ -204,7 +244,12 @@
         picker.modalPresentationStyle = UIModalPresentationFormSheet;
     
     // present picker
-    [self presentViewController:picker animated:YES completion:nil];
+    if (self.fujifilmSDKNavigationController) {
+        [self.fujifilmSDKNavigationController presentViewController:picker animated:YES completion:nil];
+    }
+    else{
+        [self presentViewController:picker animated:YES completion:nil];
+    }
     
 }
 -(IBAction) openPhotoPicker {
@@ -352,6 +397,9 @@
  @param statusCode - see documentation for list of status codes.
  */
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
+    fujifilmSDKOrderController = nil;
+    fujifilmSDKNavigationController = nil;
+    
     NSString *msg;
     /**
      Status codes that may be sent from Fujifilm SPA SDK. This may require updates if any new codes are added. See documentation for list of status codes.
@@ -444,6 +492,19 @@
     // Handle any other desired events here
 }
 
+/*
+ Optional function (requestForAdditionalImages) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
+ 
+ @param selectedImages - An array of FFImage objects that represents the images the user has in session. This should be referenced in your image picker to display to the user which images are already in their session (show the image as selected). The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and display to the user the images already in their session.
+ @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
+ */
+
+// Use this to override sdk image picker
+// -(void) requestForAdditionalImages:(NSArray<FFImage *>*)selectedImages lockedImages:(NSArray<FFImage *>*)notDeselectable
+// {
+//     [self openPhotoPicker];
+// }
+
 -(void) processItemPurchasedEventWithAttributes:(NSArray *)attributes {
     NSString *productName = nil;
     NSString *productCode = nil;
@@ -474,7 +535,6 @@
     //NSLog(@"Received purchased event for product %@ (%@) with quantity %@ and unit price %@", productName, productCode, quantity, unitPrice);
 }
 
-
 #pragma mark - UIAlertView Delegate
 - (void)alertView:(UIAlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
@@ -483,20 +543,10 @@
     {
         NSString *text = [[alertView textFieldAtIndex:0] text];
         
-        //validate image is jpg
-        //        NSURL *url = [NSURL URLWithString:text];
-        //        if (url && url.scheme && url.host) {
-        //            NSString *path = [url path];
-        //            NSString *extension = [path pathExtension];
-        //        if([extension caseInsensitiveCompare:@"jpg"] == NSOrderedSame || [extension caseInsensitiveCompare:@"jpeg"] == NSOrderedSame){
-        //                [self.imageAssets addObject:text];
-        //                [self setImageViewerImages];
-        //            }
-        //        }
-        //
-        [self.imageAssets addObject:text];
+        @synchronized(self.imageAssets) {
+            [self.imageAssets addObject:text];
+        }
         [self setImageViewerImages];
-        
     }
     //alertview with tag 2 = clear image dialog
     if(alertView.tag == 2 && buttonIndex == 1)
@@ -507,19 +557,31 @@
     }
 }
 
-
-
 #pragma mark - CTAssetsPicker Delegate
 
 - (void)qb_imagePickerController:(QBImagePickerController *)imagePickerController didFinishPickingItems:(NSArray *)items
 {
     [imagePickerController dismissViewControllerAnimated:YES completion:nil];
-    for (PHAsset* asset in items) {
-        if (![self.imageAssets containsObject:asset]) { //Prevent duplicate images from being added to the Sample App
+    
+    self.imageAssets = [NSMutableArray array];
+    self.thumbnails = [NSMutableArray array];
+    
+    @synchronized(self.imageAssets) {
+        for (PHAsset* asset in items) {
             [self.imageAssets addObject:asset];
         }
     }
+    
     [self setImageViewerImages];
+    
+    /*
+     responseForAdditionalImages: Optional method for you to call if you implemented the requestForAdditionalImages function to show your own image picker.
+     @param selectedImages - An array of FFImage objects that the user selected
+     */
+//    if(fujifilmSDKOrderController != nil){
+//        [fujifilmSDKOrderController responseForAdditionalImages:[self getImagesForSDK]];
+//    }
+    
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
@@ -542,8 +604,9 @@
     }
 }
 -(void)qb_imagePickerControllerDidCancel:(QBImagePickerController *)imagePickerController {
-    [self dismissViewControllerAnimated:YES completion:nil];
+    [imagePickerController dismissViewControllerAnimated:YES completion:nil];
 }
+
 
 #pragma mark - Helpers
 - (void) setImageViewerImages{
@@ -554,63 +617,58 @@
             
             NSMutableArray *tempThumbnails = [NSMutableArray array];
             NSMutableArray *invalidImages = [NSMutableArray array];
-            for(id object in self.imageAssets){
-                @autoreleasepool {
-                    if([object isKindOfClass:[PHAsset class]]) {
-                        PHImageRequestOptions *option = [PHImageRequestOptions new];
-                        option.synchronous = YES;
-                        option.resizeMode = PHImageRequestOptionsResizeModeFast;
-                        option.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
-                        CGSize targetSize = CGSizeMake(60, 60);
-                        [[PHImageManager defaultManager] requestImageForAsset:object
-                                                                   targetSize:targetSize
-                                                                  contentMode:PHImageContentModeAspectFill
-                                                                      options:option
-                                                                resultHandler:^(UIImage *img, NSDictionary *info){
-                                                                    if(img != nil){
-                                                                        [tempThumbnails addObject: img];
-                                                                    } else {
-                                                                        [invalidImages addObject:object];
-                                                                    }
-                                                                    
-                                                                }];
-                    }
-                    //                    else if([object isKindOfClass:[ALAsset class]]){
-                    //                        //alasset
-                    //                        ALAsset *asset = (ALAsset *) object;
-                    //                        UIImage *img = [UIImage imageWithCGImage: [asset thumbnail]];
-                    //                        if (img != nil) {
-                    //                            [tempThumbnails addObject: img];
-                    //                        } else {
-                    //                            [invalidImages addObject:object];
-                    //                        }
-                    //
-                    //                    }
-                    else if ([object isKindOfClass:[NSString class]]){
-                        //image url
-                        NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:object]];
-                        if(data != nil){
-                            UIImage *image = [UIImage imageWithData:data];
-                            if (image != nil) {
-                                CGSize destinationSize = CGSizeMake(60, 60);
-                                UIGraphicsBeginImageContext(destinationSize);
-                                [image drawInRect:CGRectMake(0,0,destinationSize.width,destinationSize.height)];
-                                [tempThumbnails addObject: UIGraphicsGetImageFromCurrentImageContext()];
-                                UIGraphicsEndImageContext();
+            
+            @synchronized(self.imageAssets) {
+                for(id object in self.imageAssets){
+                    @autoreleasepool {
+                        if([object isKindOfClass:[PHAsset class]]) {
+                            PHImageRequestOptions *option = [PHImageRequestOptions new];
+                            option.synchronous = YES;
+                            option.resizeMode = PHImageRequestOptionsResizeModeFast;
+                            option.deliveryMode = PHImageRequestOptionsDeliveryModeHighQualityFormat;
+                            CGSize targetSize = CGSizeMake(60, 60);
+                            [[PHImageManager defaultManager] requestImageForAsset:object
+                                                                       targetSize:targetSize
+                                                                      contentMode:PHImageContentModeAspectFill
+                                                                          options:option
+                                                                    resultHandler:^(UIImage *img, NSDictionary *info){
+                                                                        if(img != nil){
+                                                                            [tempThumbnails addObject: img];
+                                                                        } else {
+                                                                            [invalidImages addObject:object];
+                                                                        }
+                                                                        
+                                                                    }];
+                        }
+                        else if ([object isKindOfClass:[NSString class]]){
+                            //image url
+                            NSData *data = [NSData dataWithContentsOfURL:[NSURL URLWithString:object]];
+                            if(data != nil){
+                                UIImage *image = [UIImage imageWithData:data];
+                                if (image != nil) {
+                                    CGSize destinationSize = CGSizeMake(60, 60);
+                                    UIGraphicsBeginImageContext(destinationSize);
+                                    [image drawInRect:CGRectMake(0,0,destinationSize.width,destinationSize.height)];
+                                    [tempThumbnails addObject: UIGraphicsGetImageFromCurrentImageContext()];
+                                    UIGraphicsEndImageContext();
+                                } else {
+                                    [invalidImages addObject:object];
+                                }
                             } else {
                                 [invalidImages addObject:object];
                             }
-                        } else {
-                            [invalidImages addObject:object];
                         }
                     }
                 }
-                
             }
-            [self.imageAssets removeObjectsInArray:invalidImages];
+            @synchronized(self.imageAssets) {
+                [self.imageAssets removeObjectsInArray:invalidImages];
+            }
             dispatch_after(dispatch_time(DISPATCH_TIME_NOW, 0), dispatch_get_main_queue(), ^(void){
-                self.thumbnails = [NSMutableArray array];
-                [self.thumbnails addObjectsFromArray:tempThumbnails];
+                @synchronized(self.thumbnails) {
+                    self.thumbnails = [NSMutableArray array];
+                    [self.thumbnails addObjectsFromArray:tempThumbnails];
+                }
                 [self.imageCarousel reloadData];
                 
             });
@@ -619,9 +677,6 @@
     }
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-    
     static NSString *cellIdentifier = @"ITCell";
     
     UICollectionViewCell *cell = [collectionView  dequeueReusableCellWithReuseIdentifier:cellIdentifier forIndexPath:indexPath];
@@ -635,9 +690,7 @@
         [cell addSubview:view];
     }
     
-    
     return cell;
-    
 }
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
     return 1;
