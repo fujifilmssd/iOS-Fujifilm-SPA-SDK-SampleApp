@@ -402,6 +402,7 @@
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
     fujifilmSDKOrderController = nil;
     fujifilmSDKNavigationController = nil;
+    requestForAdditionalPhotosCompletionHandler = nil;
     
     NSString *msg;
     /**
@@ -581,7 +582,10 @@
     /*
      You can then call the completionHandler from the requestForAdditionalPhotos function to send us images if you are using your own image picker.
      */
-    //self.requestForAdditionalPhotosCompletionHandler([self getImagesForSDK]);
+    /*
+    self.requestForAdditionalPhotosCompletionHandler([self getImagesForSDK]);
+    self.requestForAdditionalPhotosCompletionHandler = nil;
+    */
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
