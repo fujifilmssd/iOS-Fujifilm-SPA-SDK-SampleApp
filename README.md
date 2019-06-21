@@ -566,14 +566,14 @@ If you're interested in having our SDK use your image picker when the user attem
  @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
  @param completionHandler - Call this completion handler to send us the images the user selected.
  */
-/*
+
 - (void)requestForAdditionalPhotos:(NSArray<FFImage *> *)selectedImages lockedImages:(NSArray<FFImage *> *)notDeselectable withCompletionHandler:(void (^)(NSArray<FFImage *> * _Nonnull))completionHandler{
-    self.requestForAdditionalPhotosCompletionHandler = completionHandler;
-    [self openPhotoPicker];
+    //self.requestForAdditionalPhotosCompletionHandler = completionHandler;
+    //open your image picker and then call the completion handler.
 }
-*/
+
 ```
-#### Full Example Code
+### Full Example Code
 
 ##### Podfile
 
