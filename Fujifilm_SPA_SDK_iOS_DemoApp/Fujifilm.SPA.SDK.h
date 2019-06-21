@@ -9,9 +9,9 @@
 #import <Photos/Photos.h>
 
 
-NS_ASSUME_NONNULL_BEGIN
-
 @class FFImage;
+
+NS_ASSUME_NONNULL_BEGIN
 
 //Events
 static NSString *const kAnalyticsEventExit                             = @"exit";
@@ -103,6 +103,8 @@ static NSString *const kEnableAddMorePhotos                            = @"enabl
 static NSString *const kMaxImagesMessage                               = @"maxImagesMessage";
 static NSString *const kPreRenderedOrder                               = @"preRenderedOrder";
 
+NS_ASSUME_NONNULL_END
+
 /** The FujifilmSPASDKDelegate protocol defines methods that your delegate object must implement to interact with the Fujifilm SPA SDK interface. The methods of this protocol notify your delegate when the user exits the checkout flow or when an error occurs. See documentation for details on status codes.
  */
 @protocol FujifilmSPASDKDelegate
@@ -192,6 +194,8 @@ typedef enum {
 @end
 
 @class FFOrder, FFLine, FFPage, FFAsset;
+
+NS_ASSUME_NONNULL_BEGIN
 
 @interface FFOrder : NSObject
 
