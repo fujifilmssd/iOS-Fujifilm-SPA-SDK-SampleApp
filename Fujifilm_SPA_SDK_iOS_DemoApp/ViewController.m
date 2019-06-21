@@ -24,6 +24,8 @@
 @property (weak, nonatomic) IBOutlet UIToolbar *toolbar;
 @property (nonatomic) CGFloat carouselWidth;
 @property (nonatomic) SettingsViewController *settingsViewController;
+@property (nonatomic, copy) void (^requestForAdditionalPhotosCompletionHandler)(NSArray<FFImage *>*);
+
 @end
 
 @implementation ViewController
@@ -32,6 +34,7 @@
 @synthesize carouselWidth;
 @synthesize fujifilmSDKOrderController;
 @synthesize fujifilmSDKNavigationController;
+@synthesize requestForAdditionalPhotosCompletionHandler;
 
 - (void)viewDidLoad{
     [super viewDidLoad];
@@ -492,18 +495,19 @@
     // Handle any other desired events here
 }
 
-/*
- Optional function (requestForAdditionalImages) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
+/**
+ Optional function (requestForAdditionalPhotos) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You can then call the completionHandler to send us the images the user selected.
  
  @param selectedImages - An array of FFImage objects that represents the images the user has in session. This should be referenced in your image picker to display to the user which images are already in their session (show the image as selected). The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and display to the user the images already in their session.
  @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
+ @param completionHandler - Call this completion handler to send us the images the user selected.
  */
-
-// Use this to override sdk image picker
-// -(void) requestForAdditionalImages:(NSArray<FFImage *>*)selectedImages lockedImages:(NSArray<FFImage *>*)notDeselectable
-// {
-//     [self openPhotoPicker];
-// }
+/*
+- (void)requestForAdditionalPhotos:(NSArray<FFImage *> *)selectedImages lockedImages:(NSArray<FFImage *> *)notDeselectable withCompletionHandler:(void (^)(NSArray<FFImage *> * _Nonnull))completionHandler{
+    self.requestForAdditionalPhotosCompletionHandler = completionHandler;
+    [self openPhotoPicker];
+}
+*/
 
 -(void) processItemPurchasedEventWithAttributes:(NSArray *)attributes {
     NSString *productName = nil;
@@ -575,13 +579,9 @@
     [self setImageViewerImages];
     
     /*
-     responseForAdditionalImages: Optional method for you to call if you implemented the requestForAdditionalImages function to show your own image picker.
-     @param selectedImages - An array of FFImage objects that the user selected
+     You can then call the completionHandler from the requestForAdditionalPhotos function to send us images if you are using your own image picker.
      */
-//    if(fujifilmSDKOrderController != nil){
-//        [fujifilmSDKOrderController responseForAdditionalImages:[self getImagesForSDK]];
-//    }
-    
+    //self.requestForAdditionalPhotosCompletionHandler([self getImagesForSDK]);
 }
 
 -(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary *)info {
