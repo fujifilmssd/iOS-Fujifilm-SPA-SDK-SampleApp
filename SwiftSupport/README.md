@@ -51,8 +51,7 @@ Finally, present the Fujifilm_SPA_SDK_iOS object:
 
 ```swift
 let navController = FujifilmSPASDKNavigationController(rootViewController: fujicontroller!)
-self.present(navController, animated: true, completion: { () -> Void in
-})
+self.present(navController, animated: true, completion: { () -> Void in })
 ```
 
 The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message.
@@ -93,8 +92,7 @@ class ViewController: UIViewController, FujifilmSPASDKDelegate {
         
         let navController = FujifilmSPASDKNavigationController(rootViewController: fujicontroller!)
         
-        self.present(navController, animated: true, completion: { () -> Void in
-        })
+        self.present(navController, animated: true, completion: { () -> Void in })
     }
     func fujifilmSPASDKFinished(withStatus statusCode: Int32, andMessage message: String) {
     }
