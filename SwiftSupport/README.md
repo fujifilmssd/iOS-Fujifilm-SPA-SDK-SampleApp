@@ -9,7 +9,7 @@ Follow the instructions on Github to include our SDK either using Cocoapods or m
 Be sure to also add the appropriate settings in your info.plist file as defined in the GitHub documentation.
 
 ### Step 2: Add the Objective-C Bridge Class
-Include the Fujifilm_SPA_SDK_Bridge.h and Fujifilm_SPA_SDK_Bridge.m in your Xcode project. They can be found at  [Fujifilm_SPA_SDK_Bridge.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/SwiftSupport/Fujifilm_SPA_SDK_Bridge.h), and [Fujifilm_SPA_SDK_Bridge.m](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/SwiftSupport/Fujifilm_SPA_SDK_Bridge.m). 
+Include the Fujifilm_SPA_SDK_Bridge.h and Fujifilm_SPA_SDK_Bridge.m in your Xcode project. They can be found at  [Fujifilm_SPA_SDK_Bridge.h](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/SwiftSupport/Fujifilm_SPA_SDK_Bridge.h), and [Fujifilm_SPA_SDK_Bridge.m](https://github.com/fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp/blob/master/SwiftSupport/Fujifilm_SPA_SDK_Bridge.m). If you get a popup that asks to create an Objective-C bridge file, tap on don't create.
 
 ### Step 3: Update Build settings with Bridge Class location
 1. In your Xcode project target Build Settings (Build Settings tab when you are viewing your targets settings) find the “Objective-C Bridging Header” setting. 
@@ -31,7 +31,7 @@ In your view controller, create a Fujifilm_SPA_SDK_iOS object. Initialize it usi
 let fujicontroller:Fujifilm_SPA_SDK_iOS? = Fujifilm_SPA_SDK_iOS(
     apiKey: "YOUR_API_KEY", //REPLACE with YOUR ApiKey
     environment: "Preview",
-    images: ARRAY_OF_IMAGES,
+    images: ARRAY_OF_FFIMAGES,
     userID: "", //optional
     retainUserInfo:
     false,
@@ -51,8 +51,7 @@ Finally, present the Fujifilm_SPA_SDK_iOS object:
 
 ```swift
 let navController = FujifilmSPASDKNavigationController(rootViewController: fujicontroller!)
-self.present(navController, animated: true, completion: { () -> Void in
-})
+self.present(navController, animated: true, completion: { () -> Void in })
 ```
 
 The FujifilmSPASDKDelegate requires your view controller to implement the method fujifilmSPASDKFinishedWithStatus:(int) statusCode andMessage(NSString*) message.
@@ -74,10 +73,9 @@ let kFujifilmSPASDEnvironment = "Preview"
 
 class ViewController: UIViewController, FujifilmSPASDKDelegate {
    
-    @IBAction func launchSDKBtnTapped(_ sender: Any) {
+@IBAction func launchSDK(_ sender: Any) {
+        var photoarray: [FFImage] = [FFImage(nsurl: URL(string:"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg")!)]
         
-        var photoarray: [String] = ["https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg"]
-  
         let fujicontroller:Fujifilm_SPA_SDK_iOS? = Fujifilm_SPA_SDK_iOS(
             apiKey: kFujifilmSPASDKAPIKey, //REPLACE with YOUR ApiKey
             environment: kFujifilmSPASDEnvironment,
@@ -89,25 +87,19 @@ class ViewController: UIViewController, FujifilmSPASDKDelegate {
             launchPage:
             kHome,
             extraOptions: nil)
-    
+     
         fujicontroller?.delegate = self
         
         let navController = FujifilmSPASDKNavigationController(rootViewController: fujicontroller!)
         
-        self.present(navController, animated: true, completion: { () -> Void in
-        })
+        self.present(navController, animated: true, completion: { () -> Void in })
     }
-    func fujifilmSPASDKFinished(withStatus statusCode: Int32, andMessage message: String!) {
+    func fujifilmSPASDKFinished(withStatus statusCode: Int32, andMessage message: String) {
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
     }
 }
 })

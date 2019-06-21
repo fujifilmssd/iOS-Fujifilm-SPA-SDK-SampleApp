@@ -32,7 +32,7 @@ This section assumes you have CocoaPods installed on your system.
 
 In your Podfile, include the SPA SDK pod like so:
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.8.10'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.11'
 ```
 Install the pod by running navigating to the project directory in a terminal and running `$ pod install`. If you have already installed the SDK and would like to update to the latest version, run `$ pod update` instead.
 
@@ -566,19 +566,19 @@ If you're interested in having our SDK use your image picker when the user attem
  @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
  @param completionHandler - Call this completion handler to send us the images the user selected.
  */
-/*
+
 - (void)requestForAdditionalPhotos:(NSArray<FFImage *> *)selectedImages lockedImages:(NSArray<FFImage *> *)notDeselectable withCompletionHandler:(void (^)(NSArray<FFImage *> * _Nonnull))completionHandler{
-    self.requestForAdditionalPhotosCompletionHandler = completionHandler;
-    [self openPhotoPicker];
+    //self.requestForAdditionalPhotosCompletionHandler = completionHandler;
+    //open your image picker and then call the completion handler.
 }
-*/
+
 ```
-#### Full Example Code
+### Full Example Code
 
 ##### Podfile
 
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.8.10'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.11'
 ```
 
 ##### ViewController.h
