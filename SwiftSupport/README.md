@@ -35,10 +35,10 @@ let fujicontroller:Fujifilm_SPA_SDK_iOS? = Fujifilm_SPA_SDK_iOS(
     userID: "", //optional
     retainUserInfo:
     false,
-    promoCode: "", //optional
+    promoCode: nil, //optional
     launchPage:
     kHome,
-    extraOptions: [:])
+    extraOptions: nil)
 ```
 
 Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
@@ -83,10 +83,10 @@ class ViewController: UIViewController, FujifilmSPASDKDelegate {
             userID: "", //optional
             retainUserInfo:
             false,
-            promoCode: "", //optional
+            promoCode: nil, //optional
             launchPage:
             kHome,
-            extraOptions: [:])
+            extraOptions: nil)
      
         fujicontroller?.delegate = self
         
