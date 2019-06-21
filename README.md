@@ -32,7 +32,7 @@ This section assumes you have CocoaPods installed on your system.
 
 In your Podfile, include the SPA SDK pod like so:
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.8.8'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.9'
 ```
 Install the pod by running navigating to the project directory in a terminal and running `$ pod install`. If you have already installed the SDK and would like to update to the latest version, run `$ pod update` instead.
 
@@ -136,10 +136,10 @@ In your view controller header file, ensure it implements the `FujifilmSPASDKDel
 
 In your view controller, create a `Fujifilm_SPA_SDK_iOS` object. Initialize it using the `initWithApiKey:environment:images:userID:retainUserInfo:promoCode:launchPage:extraOptions` method:
 ```objective-c
-Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
+Fujifilm_SPA_SDK_iOS *fujifilmSDKOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
 initWithApiKey: @"YOUR_API_KEY" //REPLACE with YOUR ApiKey
 environment:  @"Preview"
-images: NS_ARRAY_OF_IMAGES
+images: NS_ARRAY_OF_FFIMAGES
 userID: @"" //optional
 retainUserInfo: YES
 promoCode: @"" //optional
@@ -152,7 +152,7 @@ extraOptions: nil];
 | ------- | ----- | --------------- |
 |`apiKey`|`NSString*`|Fujifilm SPA apiKey you receive when you create your app at http://fujifilmapi.com. This apiKey is environment specific    |
 |`environment`|`NSString*`|Sets the environment to use. The apiKey must match your app’s environment set on http://fujifilmapi.com. Possible values are “preview” or "production".
-|`images`|`id`|An `NSArray*` of `PHAsset*` or `NSString*` (for public image urls. Must use `https://`). Array can contain combination of types. Images must be `jpeg`, `png`, or `heic` format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
+|`images`|`FFImage*`|An NSArray of FFImage which can be initialized with a PHAsset or NSURL. Images must be jpeg, png , or heic format and smaller than 20MB. A maximum of 100 images can be sent in a given Checkout process. If more than 100 images are sent, only the first 100 will be processed.
 |`userID`|`NSString*`|Optional parameter. Send in an empty string `@""` if you don't use it. This can be used to link a user with an order. Maximum length is 50 alphanumeric characters.
 |`retainUserInfo`|`BOOL`|Save user information (address, phone number, email) for when the app is used a second time.
 |`promoCode`|`NSString*`|Optional parameter to add a promo code to the order. Contact us through http://fujifilmapi.com for usage and support.
@@ -163,17 +163,17 @@ extraOptions: nil];
 
 Next, set the Fujifilm_SPA_SDK_iOS object’s delegate to the view controller:
 ```objective-c
-fujifilmOrderController.delegate = self;
+fujifilmSDKOrderController.delegate = self;
 ```
 
 Next, create a new FujifilmSPASDKNavigation Controller with the orderController as its root
 ```objective-c
-FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
+FujifilmSPASDKNavigationController *fujifilmSDKNavigationController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmSDKOrderController];
 ```
 
 Finally, present the Fujifilm_SPA_SDK_iOS object:
 ```objective-c
-[self presentViewController:navController animated:YES completion:nil];
+[self presentViewController:fujifilmSDKNavigationController animated:YES completion:nil];
 ```
 
 #### Extra Initialization Options (Optional)
@@ -553,13 +553,46 @@ Not event attributes
 |-|-|-|
 |`kAnalyticsAttributeFavoritedStoreNumber`|`NSString`|The store number of the store that the user favorited|
 
+#### Override Image Picker (Optional)
+If you're interested in having our SDK use your image picker when the user attempts to add more photos to their session, you can implement the optional requestForAdditionalImages function. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
 
+##### Example Code
+
+```objective-c
+/*
+     Optional function (requestForAdditionalImages) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
+ 
+     @param selectedImages - An array of FFImage objects that represents the images the user has in session. This should be referenced in your image picker to display to the user which images are already in their session (show the image as selected). The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and display to the user the images already in their session.
+     @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
+ */
+/*
+-(void) requestForAdditionalImages:(NSArray<FFImage *>*)selectedImages lockedImages:(NSArray<FFImage *>*)notDeselectable
+{
+    //open your own image picker
+     //if (self.fujifilmSDKNavigationController) {
+        //[self.fujifilmSDKNavigationController presentViewController:myImagePicker animated:YES completion:nil];
+     //}
+     //else{
+        //[self presentViewController:myImagePicker animated:YES completion:nil];
+     //}
+}
+*/
+ 
+     /*
+     responseForAdditionalImages: Optional method for you to call if you implemented the requestForAdditionalImages function to show your own image picker.
+     @param selectedImages - An array of FFImage objects that the user selected
+     */
+//    if(fujifilmSDKOrderController != nil){
+//        [fujifilmSDKOrderController responseForAdditionalImages: selectedImages;
+//    }
+ 
+```
 #### Full Example Code
 
 ##### Podfile
 
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.8.8'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.9'
 ```
 
 ##### ViewController.h
@@ -592,7 +625,11 @@ typedef enum FujifilmSDKStatusCode {
 
 ```objective-c
 - (IBAction)launchFujifilmSDK:(id)sender {
-    NSArray *images = [[NSArray alloc] initWithObjects:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg",@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg", nil];
+
+     FFImage *newFFImage1 = [[FFImage alloc] initWithNSURL:[NSURL URLWithString:@"https://webservices.fujifilmesys.com/venus/imagebank/fujifilmCamera.jpg"]];
+     FFImage *newFFImage2 = [[FFImage alloc] initWithNSURL:[NSURL URLWithString:@"https://webservices.fujifilmesys.com/venus/imagebank/mustang.jpg"]];
+     
+     NSMutableArray<FFImage *> *ffimages =  [[NSMutableArray alloc] initWithObjects:newFFImage1,newFFImage2, nil];
 
     /*
     -------------------------------------------------------------------------------
@@ -603,25 +640,25 @@ typedef enum FujifilmSDKStatusCode {
     - Ensure you have the right apiKey for the right environment.
     //MAKE SURE TO CHANGE YOUR_API_KEY TO YOUR APIKEY!
     */
-    Fujifilm_SPA_SDK_iOS *fujifilmOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
+    Fujifilm_SPA_SDK_iOS *fujifilmSDKOrderController = [[Fujifilm_SPA_SDK_iOS alloc]
     initWithApiKey: @"5cb79d2191874aca879e2c9ed7d5747c"
     environment:  @"Preview"
-    images: images
+    images: ffimages
     userID: @"" //optional
     retainUserInfo: YES
     promoCode: @"" //optional
     launchPage: kHome
     extraOptions: nil];
 
-    fujifilmOrderController.delegate = self;
+    fujifilmSDKOrderController.delegate = self;
     //Create a new FujifilmSPASDKNavigation Controller with the orderController as its root
-    FujifilmSPASDKNavigationController *navController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmOrderController];
+    FujifilmSPASDKNavigationController *fujifilmSDKNavigationController = [[FujifilmSPASDKNavigationController alloc] initWithRootViewController:fujifilmSDKOrderController];
     /*
     ---------------------------------------------------------------------------------------
     Present the Fujifilm SPA SDK Navigation Controller
     ---------------------------------------------------------------------------------------
     */
-    [self presentViewController:navController animated:YES completion:nil];
+    [self presentViewController:fujifilmSDKNavigationController animated:YES completion:nil];
 }
 -(void) fujifilmSPASDKFinishedWithStatus: (int) statusCode andMessage: (NSString*) message{
     NSString *msg;
