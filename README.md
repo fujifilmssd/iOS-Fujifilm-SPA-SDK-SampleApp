@@ -32,7 +32,7 @@ This section assumes you have CocoaPods installed on your system.
 
 In your Podfile, include the SPA SDK pod like so:
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.8.9'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.10'
 ```
 Install the pod by running navigating to the project directory in a terminal and running `$ pod install`. If you have already installed the SDK and would like to update to the latest version, run `$ pod update` instead.
 
@@ -554,45 +554,31 @@ Not event attributes
 |`kAnalyticsAttributeFavoritedStoreNumber`|`NSString`|The store number of the store that the user favorited|
 
 #### Override Image Picker (Optional)
-If you're interested in having our SDK use your image picker when the user attempts to add more photos to their session, you can implement the optional requestForAdditionalImages function. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
+If you're interested in having our SDK use your image picker when the user attempts to add more photos to their session, you can implement the optional requestForAdditionalPhotos function. Our SDK will call this function when a user attempts to add more photos from within our SDK. You can then call the completionHandler to send us the images the user selected.
 
 ##### Example Code
 
 ```objective-c
-/*
-     Optional function (requestForAdditionalImages) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You must then call responseForAdditionalImages in our SDK to send us the images the user selected.
+/**
+ Optional function (requestForAdditionalPhotos) to implement if you would like to use your own image picker. Our SDK will call this function when a user attempts to add more photos from within our SDK. You can then call the completionHandler to send us the images the user selected.
  
-     @param selectedImages - An array of FFImage objects that represents the images the user has in session. This should be referenced in your image picker to display to the user which images are already in their session (show the image as selected). The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and display to the user the images already in their session.
-     @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
+ @param selectedImages - An array of FFImage objects that represents the images the user has in session. This should be referenced in your image picker to display to the user which images are already in their session (show the image as selected). The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and display to the user the images already in their session.
+ @param notDeselectable - An array of FFImage objects that represents the images the user is not allowed to deselect because they are being used in a cart or a product builder. This should be referenced to prevent the user from deselecting images in your image picker. The FFImage object has a uniqueidentifier property that is set to the PHAsset's identifier or the NSURL's path and can be accessed by calling getUniqueIdentifier, [myFFimageObject getUniqueIdentifier]. You can then use this identifier to compare it to the identifiers for the images in your image picker and prevent the user from deselecting the image.
+ @param completionHandler - Call this completion handler to send us the images the user selected.
  */
 /*
--(void) requestForAdditionalImages:(NSArray<FFImage *>*)selectedImages lockedImages:(NSArray<FFImage *>*)notDeselectable
-{
-    //open your own image picker
-     //if (self.fujifilmSDKNavigationController) {
-        //[self.fujifilmSDKNavigationController presentViewController:myImagePicker animated:YES completion:nil];
-     //}
-     //else{
-        //[self presentViewController:myImagePicker animated:YES completion:nil];
-     //}
+- (void)requestForAdditionalPhotos:(NSArray<FFImage *> *)selectedImages lockedImages:(NSArray<FFImage *> *)notDeselectable withCompletionHandler:(void (^)(NSArray<FFImage *> * _Nonnull))completionHandler{
+    self.requestForAdditionalPhotosCompletionHandler = completionHandler;
+    [self openPhotoPicker];
 }
 */
- 
-     /*
-     responseForAdditionalImages: Optional method for you to call if you implemented the requestForAdditionalImages function to show your own image picker.
-     @param selectedImages - An array of FFImage objects that the user selected
-     */
-//    if(fujifilmSDKOrderController != nil){
-//        [fujifilmSDKOrderController responseForAdditionalImages: selectedImages;
-//    }
- 
 ```
 #### Full Example Code
 
 ##### Podfile
 
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.8.9'
+pod 'Fujifilm-SPA-SDK', '~> 1.8.10'
 ```
 
 ##### ViewController.h
