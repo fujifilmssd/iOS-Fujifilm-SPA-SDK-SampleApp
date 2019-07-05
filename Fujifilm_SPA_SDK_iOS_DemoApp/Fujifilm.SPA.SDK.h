@@ -102,6 +102,7 @@ static NSString *const kSiteDeepLink                                   = @"SiteD
 static NSString *const kEnableAddMorePhotos                            = @"enableAddMorePhotos";
 static NSString *const kMaxImagesMessage                               = @"maxImagesMessage";
 static NSString *const kPreRenderedOrder                               = @"preRenderedOrder";
+static NSString *const kBrandingInfo                                   = @"brandingInfo";
 
 NS_ASSUME_NONNULL_END
 
