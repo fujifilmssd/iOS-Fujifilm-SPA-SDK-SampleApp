@@ -600,7 +600,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Fujifilm_SPA_SDK_iOS_DemoApp",
 				);
-				ONLY_ACTIVE_ARCH = NO;
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -628,6 +628,7 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Fujifilm_SPA_SDK_iOS_DemoApp",
 				);
+				ONLY_ACTIVE_ARCH = YES;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
