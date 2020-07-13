@@ -280,6 +280,7 @@
 				29F5EB041C4BEEC800067F84 /* AppDelegate.m */,
 				29F5EB061C4BEEC800067F84 /* ViewController.h */,
 				29F5EB071C4BEEC800067F84 /* ViewController.m */,
+				29E581DE1E8411D700E54D0A /* Fujifilm_SPA_SDK_iOS_AppSwitch.h */,
 				2289DD2F1CB401AF00F58D8E /* SettingsViewController.h */,
 				2289DD301CB401AF00F58D8E /* SettingsViewController.m */,
 				29F5EB091C4BEEC800067F84 /* Main.storyboard */,
@@ -335,7 +336,6 @@
 			isa = PBXGroup;
 			children = (
 				298E902B1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a */,
-				29E581DE1E8411D700E54D0A /* Fujifilm_SPA_SDK_iOS_AppSwitch.h */,
 				29F5EC5B1C4D535900067F84 /* Fujifilm.SPA.SDK.h */,
 			);
 			name = Fujifilm_SPA_SDK_iOS;
