@@ -523,6 +523,7 @@
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_NO_COMMON_BLOCKS = YES;
@@ -543,7 +544,6 @@
 				PROVISIONING_PROFILE = "39bb905f-feea-40e4-a5f2-c8bf751c712f";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Debug;
 		};
@@ -585,7 +585,6 @@
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 			};
 			name = Release;
 		};
@@ -611,7 +610,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fujifilm.spa.sdk.sample;
 				PRODUCT_NAME = "Fujifilm SDK";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
@@ -638,7 +636,6 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fujifilm.spa.sdk.sample;
 				PRODUCT_NAME = "Fujifilm SDK";
 				PROVISIONING_PROFILE = "";
-				VALID_ARCHS = "arm64 arm64e armv7 armv7s";
 				VERSIONING_SYSTEM = "";
 			};
 			name = Release;

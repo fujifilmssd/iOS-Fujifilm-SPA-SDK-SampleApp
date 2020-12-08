@@ -32,7 +32,7 @@ This section assumes you have CocoaPods installed on your system.
 
 In your Podfile, include the SPA SDK pod like so:
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.10.12'
+pod 'Fujifilm-SPA-SDK', '~> 1.10.13'
 ```
 Install the pod by navigating to the project directory in a terminal and running `$ pod install`. If you have already installed the SDK and would like to update to the latest version, run `$ pod update` instead.
 
@@ -585,7 +585,7 @@ If you're interested in having our SDK use your image picker when the user attem
 ##### Podfile
 
 ```ruby
-pod 'Fujifilm-SPA-SDK', '~> 1.10.12'
+pod 'Fujifilm-SPA-SDK', '~> 1.10.13'
 ```
 
 ##### ViewController.h
