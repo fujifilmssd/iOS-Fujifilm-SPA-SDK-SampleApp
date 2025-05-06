@@ -18,7 +18,6 @@
 		292BACCC2190D49700ADB3B5 /* QBItemViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A611F9D016400D93C37 /* QBItemViewController.m */; };
 		292BACCD2190D49700ADB3B5 /* QBCheckmarkView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A631F9D016400D93C37 /* QBCheckmarkView.m */; };
 		292BACCE2190D49700ADB3B5 /* QBSlomoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A661F9D016400D93C37 /* QBSlomoIconView.m */; };
-		298E902C1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 298E902B1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a */; };
 		29F5EB021C4BEEC800067F84 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5EB011C4BEEC800067F84 /* main.m */; };
 		29F5EB051C4BEEC800067F84 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5EB041C4BEEC800067F84 /* AppDelegate.m */; };
 		29F5EB081C4BEEC800067F84 /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 29F5EB071C4BEEC800067F84 /* ViewController.m */; };
@@ -100,7 +99,6 @@
 		294D7A691F9D016400D93C37 /* _OHQBImagePicker.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = _OHQBImagePicker.m; sourceTree = "<group>"; };
 		294D7A6B1F9D016400D93C37 /* QBImagePickerTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerTests.m; sourceTree = "<group>"; };
 		294D7A6C1F9D016400D93C37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		298E902B1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libFujifilm_SPA_SDK_iOS.a; sourceTree = "<group>"; };
 		29E581DE1E8411D700E54D0A /* Fujifilm_SPA_SDK_iOS_AppSwitch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fujifilm_SPA_SDK_iOS_AppSwitch.h; sourceTree = "<group>"; };
 		29F5EAFD1C4BEEC800067F84 /* Fujifilm SDK.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Fujifilm SDK.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		29F5EB011C4BEEC800067F84 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
@@ -123,7 +121,6 @@
 		29F5EC4E1C4C0F8D00067F84 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		29F5EC501C4C0F9500067F84 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		29F5EC521C4C0F9C00067F84 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
-		29F5EC5B1C4D535900067F84 /* Fujifilm.SPA.SDK.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Fujifilm.SPA.SDK.h; sourceTree = "<group>"; };
 		4CF45CCF1E7996A90083734F /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
 		4CF45CD01E7996A90083734F /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
 		4CF45CD11E7996A90083734F /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
@@ -139,7 +136,6 @@
 				4CF45CD31E7996A90083734F /* Accelerate.framework in Frameworks */,
 				4CF45CD41E7996A90083734F /* AudioToolbox.framework in Frameworks */,
 				4CF45CD51E7996A90083734F /* AVFoundation.framework in Frameworks */,
-				298E902C1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a in Frameworks */,
 				4CF45CD61E7996A90083734F /* CoreMedia.framework in Frameworks */,
 				29F5EC511C4C0F9500067F84 /* UIKit.framework in Frameworks */,
 				29F5EC531C4C0F9C00067F84 /* Foundation.framework in Frameworks */,
@@ -335,8 +331,6 @@
 		29F5EC551C4C1D4B00067F84 /* Fujifilm_SPA_SDK_iOS */ = {
 			isa = PBXGroup;
 			children = (
-				298E902B1E8B2D9300C71777 /* libFujifilm_SPA_SDK_iOS.a */,
-				29F5EC5B1C4D535900067F84 /* Fujifilm.SPA.SDK.h */,
 			);
 			name = Fujifilm_SPA_SDK_iOS;
 			sourceTree = "<group>";

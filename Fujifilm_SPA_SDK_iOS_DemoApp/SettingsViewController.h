@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Fujifilm.SPA.SDK.h"
+#import  <Fujifilm_SPA_SDK_iOS/Fujifilm.SPA.SDK.h>
 
 @interface SettingsViewController : UITableViewController<UITextFieldDelegate, UITableViewDelegate>{}
 @property (weak, nonatomic) IBOutlet UISegmentedControl *environmentControl;

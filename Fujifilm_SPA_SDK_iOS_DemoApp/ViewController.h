@@ -6,7 +6,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "Fujifilm.SPA.SDK.h"
+#import  <Fujifilm_SPA_SDK_iOS/Fujifilm.SPA.SDK.h>
 #import "SettingsViewController.h"
 #import "QBImagePicker.h"
 
