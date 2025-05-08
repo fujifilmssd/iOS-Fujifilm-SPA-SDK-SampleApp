@@ -3,11 +3,16 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 46;
+	objectVersion = 54;
 	objects = {
 
 /* Begin PBXBuildFile section */
 		2289DD311CB401AF00F58D8E /* SettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 2289DD301CB401AF00F58D8E /* SettingsViewController.m */; };
+		228C0BB42DCA85C700311BA0 /* File.swift in Sources */ = {isa = PBXBuildFile; fileRef = 228C0BB32DCA85C700311BA0 /* File.swift */; };
+		228C0BE12DCBDF8500311BA0 /* FFImagePicker2.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228C0BD22DCBDF6B00311BA0 /* FFImagePicker2.xcframework */; };
+		228C0BE22DCBDF8500311BA0 /* FFImagePicker2.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 228C0BD22DCBDF6B00311BA0 /* FFImagePicker2.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		228C0BE92DCBE04100311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework in Frameworks */ = {isa = PBXBuildFile; fileRef = 228C0BE72DCBE02A00311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework */; };
+		228C0BEA2DCBE04100311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 228C0BE72DCBE02A00311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		292BACC52190D49700ADB3B5 /* QBVideoIconView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A551F9D016400D93C37 /* QBVideoIconView.m */; };
 		292BACC62190D49700ADB3B5 /* QBVideoIndicatorView.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A561F9D016400D93C37 /* QBVideoIndicatorView.m */; };
 		292BACC72190D49700ADB3B5 /* QBItemCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 294D7A581F9D016400D93C37 /* QBItemCell.m */; };
@@ -48,6 +53,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
+				228C0BE22DCBDF8500311BA0 /* FFImagePicker2.xcframework in Embed Frameworks */,
+				228C0BEA2DCBE04100311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -57,6 +64,10 @@
 /* Begin PBXFileReference section */
 		2289DD2F1CB401AF00F58D8E /* SettingsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingsViewController.h; sourceTree = "<group>"; };
 		2289DD301CB401AF00F58D8E /* SettingsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SettingsViewController.m; sourceTree = "<group>"; };
+		228C0BB22DCA85C700311BA0 /* Fujifilm_SPA_SDK_iOS_DemoApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Fujifilm_SPA_SDK_iOS_DemoApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		228C0BB32DCA85C700311BA0 /* File.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = File.swift; sourceTree = "<group>"; };
+		228C0BD22DCBDF6B00311BA0 /* FFImagePicker2.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = FFImagePicker2.xcframework; path = Carthage/Build/FFImagePicker2.xcframework; sourceTree = "<group>"; };
+		228C0BE72DCBE02A00311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = "Fujifilm_SPA_SDK_iOS-Lite.xcframework"; path = "Carthage/Build/Fujifilm_SPA_SDK_iOS-Lite.xcframework"; sourceTree = "<group>"; };
 		294D7A3C1F9D016400D93C37 /* QBImagePickerDemoTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = QBImagePickerDemoTests.m; sourceTree = "<group>"; };
 		294D7A3D1F9D016400D93C37 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		294D7A3E1F9D016400D93C37 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
@@ -138,6 +149,7 @@
 				4CF45CD51E7996A90083734F /* AVFoundation.framework in Frameworks */,
 				4CF45CD61E7996A90083734F /* CoreMedia.framework in Frameworks */,
 				29F5EC511C4C0F9500067F84 /* UIKit.framework in Frameworks */,
+				228C0BE92DCBE04100311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework in Frameworks */,
 				29F5EC531C4C0F9C00067F84 /* Foundation.framework in Frameworks */,
 				29F5EC4F1C4C0F8D00067F84 /* SystemConfiguration.framework in Frameworks */,
 				29F5EC4D1C4C0F8000067F84 /* MobileCoreServices.framework in Frameworks */,
@@ -148,6 +160,7 @@
 				29F5EC431C4C0F1700067F84 /* CoreGraphics.framework in Frameworks */,
 				29F5EC411C4C0F0E00067F84 /* ImageIO.framework in Frameworks */,
 				29F5EC3F1C4C0ECE00067F84 /* Photos.framework in Frameworks */,
+				228C0BE12DCBDF8500311BA0 /* FFImagePicker2.xcframework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -254,9 +267,11 @@
 		29F5EAF41C4BEEC800067F84 = {
 			isa = PBXGroup;
 			children = (
+				228C0BB32DCA85C700311BA0 /* File.swift */,
 				29F5EAFF1C4BEEC800067F84 /* Fujifilm_SPA_SDK_iOS_DemoApp */,
 				29F5EAFE1C4BEEC800067F84 /* Products */,
 				29F5EC541C4C102B00067F84 /* Frameworks */,
+				228C0BB22DCA85C700311BA0 /* Fujifilm_SPA_SDK_iOS_DemoApp-Bridging-Header.h */,
 			);
 			sourceTree = "<group>";
 		};
@@ -308,6 +323,8 @@
 		29F5EC541C4C102B00067F84 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				228C0BE72DCBE02A00311BA0 /* Fujifilm_SPA_SDK_iOS-Lite.xcframework */,
+				228C0BD22DCBDF6B00311BA0 /* FFImagePicker2.xcframework */,
 				BAFF73EC1F7063FD002D34A6 /* libPods-Fujifilm_SPA_SDK_iOS_DemoApp.a */,
 				4CF45CCF1E7996A90083734F /* Accelerate.framework */,
 				4CF45CD01E7996A90083734F /* AudioToolbox.framework */,
@@ -370,6 +387,7 @@
 					29F5EAFC1C4BEEC800067F84 = {
 						CreatedOnToolsVersion = 7.2;
 						DevelopmentTeam = 8742Z6479L;
+						LastSwiftMigration = 1530;
 					};
 				};
 			};
@@ -449,6 +467,7 @@
 				292BACC92190D49700ADB3B5 /* QBAlbumsViewController.m in Sources */,
 				292BACC82190D49700ADB3B5 /* QBAlbumCell.m in Sources */,
 				292BACC52190D49700ADB3B5 /* QBVideoIconView.m in Sources */,
+				228C0BB42DCA85C700311BA0 /* File.swift in Sources */,
 				29F5EB021C4BEEC800067F84 /* main.m in Sources */,
 				292BACCE2190D49700ADB3B5 /* QBSlomoIconView.m in Sources */,
 				292BACCC2190D49700ADB3B5 /* QBItemViewController.m in Sources */,
@@ -586,12 +605,21 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 8742Z6479L;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+					"BRAINTREE_SDK=1",
+				);
 				INFOPLIST_FILE = Fujifilm_SPA_SDK_iOS_DemoApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Fujifilm_SPA_SDK_iOS_DemoApp",
@@ -604,6 +632,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fujifilm.spa.sdk.sample;
 				PRODUCT_NAME = "Fujifilm SDK";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fujifilm_SPA_SDK_iOS_DemoApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "";
 			};
 			name = Debug;
@@ -612,12 +643,16 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = 8742Z6479L;
 				INFOPLIST_FILE = Fujifilm_SPA_SDK_iOS_DemoApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Fujifilm_SPA_SDK_iOS_DemoApp",
@@ -630,6 +665,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.fujifilm.spa.sdk.sample;
 				PRODUCT_NAME = "Fujifilm SDK";
 				PROVISIONING_PROFILE = "";
+				SWIFT_OBJC_BRIDGING_HEADER = "Fujifilm_SPA_SDK_iOS_DemoApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "";
 			};
 			name = Release;
