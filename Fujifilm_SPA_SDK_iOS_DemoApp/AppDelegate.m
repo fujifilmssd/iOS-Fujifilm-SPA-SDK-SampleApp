@@ -6,7 +6,7 @@
 //
 
 #import "AppDelegate.h"
-#import "Fujifilm_SPA_SDK_iOS_AppSwitch.h"
+#import <Fujifilm_SPA_SDK_iOS/Fujifilm_SPA_SDK_iOS_AppSwitch.h>
 
 @interface AppDelegate ()
 

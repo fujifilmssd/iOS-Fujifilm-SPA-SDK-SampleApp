@@ -20,3 +20,4 @@ Fujifilm_SPA_SDK_iOS_DemoApp/.DS_Store
 Fujifilm_SPA_SDK_iOS_DemoApp.xcodeproj/project.xcworkspace/xcshareddata/IDEWorkspaceChecks.plist
 
 .DS_Store
+Carthage/
