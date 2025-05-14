@@ -49,12 +49,10 @@ Upon successful installation, close your Xcode project if it is open, and open t
 ##### Skip this section if you are using CocoaPods!
 1. Obtain the frameworks
 * Carthage
-  * Add the following lines to your Cartfile
+  * Add the following line to your Cartfile
 	 ```
 	github "fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp" ~> 2.4.0
-	github "braintree/braintree_ios" ~> 6.32.0
 	```
-   * Note that the second line is only required if you wish to support payment via PayPal. If you do not wish to support PayPal, you may omit the Braintree dependency.
    * Run the following command in your terminal
      ```
      carthage update --use-xcframeworks
@@ -622,7 +620,6 @@ pod 'Fujifilm-SPA-SDK', '~> 2.4.0'
 ##### Cartfile
 ```
 github "fujifilmssd/iOS-Fujifilm-SPA-SDK-SampleApp" ~> 2.4.0
-github "braintree/braintree_ios" ~> 6.32.0
 ```
 ##### ViewController.h
 
