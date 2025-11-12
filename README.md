@@ -465,9 +465,9 @@ The attributes are a `NSArray` of `NSDictionary`. In each `NSDictionary`, the ke
 |Event Name|Event Value|Description|
 |-|-|-|
 |Exit|`kAnalyticsEventExit`|Sent when the user exits the SDK|
-|Print Edited|`kAnalyticsEventPhotoEdited`|Sent when the user edits a print product|
-|Product Edited|`kAnalyticsEventProductEdited`|Sent when the user edits any non-print product|
-|Continue Shopping|`kAnalyticsEventContinueShopping`|Sent when the user tapps "Continue Shopping" from the cart page and the thank you page|
+|Print Edited|`kAnalyticsEventPhotoEdited`|Sent when the user finishes making edits to a photo on the prints page|
+|Product Edited|`kAnalyticsEventProductEdited`|Sent when the user finishes editing an item from the cart|
+|Continue Shopping|`kAnalyticsEventContinueShopping`|Sent when the user taps "Continue Shopping" from the cart page and the thank you page|
 |Item Added to Cart|`kAnalyticsEventItemAddedToCart`|Sent when a product is added to cart from either the compose page or the prints page|
 |Item Composed|`kAnalyticsEventitemComposed`|Sent when the user goes to the compose page to edit a product|
 |Item Details Viewed|`kAnalyticsEventDetailsViewed`|Sent when the user taps navigates to the product details page|
